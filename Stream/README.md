@@ -12,3 +12,5 @@
 	events: 'drain', 向可写流中写入数据, 在适当时机触发'drain'事件(WTF?)
 
 3. 通过writeale.write(chunk)返回false, 调用readale.pause()暂停readable 
+
+## readable.pipe(writable), 将可读流写入到可写流中
