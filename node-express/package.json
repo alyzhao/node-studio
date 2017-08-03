@@ -12,17 +12,17 @@
     "url": "https://github.com/gegehehehe/node-studio"
   },
   "license": "MIT",
-  "engines": {
+  "engines": {  
     "node": "v7.7.4"
   },
   "bugs": {
     "url": "http://path/to/bug",
-    "email": "bug@example.com"
+    "email": "995029442@qq.com"
   },
   "contributors": [
     {
-      "name": "李四",
-      "email": "lisi@example.com"
+      "name": "CaptainZhao",
+      "email": "995029442@qq.com"
     }
   ],
   "scripts": {
