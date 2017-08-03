@@ -12,7 +12,7 @@
     "url": "https://github.com/gegehehehe/node-studio"
   },
   "license": "MIT",
-  "engines": {  
+  "engines": {
     "node": "v7.7.4"
   },
   "bugs": {
@@ -32,6 +32,8 @@
     "body-parser": "^1.17.2",
     "express": "latest",
     "mongoose": "latest",
-    "serve-static": "^1.12.3"
+    "mpromise": "^0.5.5",
+    "serve-static": "^1.12.3",
+    "underscore": "^1.8.3"
   }
 }
