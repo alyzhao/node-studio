@@ -1,0 +1,37 @@
+{
+  "name": "node-expresss",
+  "version": "0.0.1",
+  "author": "CaptainZhao",
+  "description": "node with express",
+  "keywords": [
+    "node.js",
+    "javascript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gegehehehe/node-studio"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "v7.7.4"
+  },
+  "bugs": {
+    "url": "http://path/to/bug",
+    "email": "bug@example.com"
+  },
+  "contributors": [
+    {
+      "name": "李四",
+      "email": "lisi@example.com"
+    }
+  ],
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "latest",
+    "mongoose": "latest",
+    "serve-static": "^1.12.3"
+  }
+}

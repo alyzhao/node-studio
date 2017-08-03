@@ -1,0 +1,41 @@
+extend ../layout
+
+block content
+	.container
+		.row
+			form.form-horizontal(method="post", action="/admin/movie/new")
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") 电影名字
+					.col-sm-6
+						input#inputTitle.form-control(type="text", name="movie[title]")
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") 电影导演
+					.col-sm-6
+						input#inputTitle.form-control(type="text", name="movie[doctor]")
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") 国家
+					.col-sm-6
+						input#inputTitle.form-control(type="text", name="movie[country]")
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") 语言
+					.col-sm-6
+						input#inputTitle.form-control(type="text", name="movie[语言]")
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") 海报地址
+					.col-sm-6
+						input#inputTitle.form-control(type="text", name="movie[poster]")
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") 片源地址
+					.col-sm-6
+						input#inputTitle.form-control(type="text", name="movie[flash]")
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") 上映年代
+					.col-sm-6
+						input#inputTitle.form-control(type="text", name="movie[year]")
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") 电影简介
+					.col-sm-6
+						input#inputTitle.form-control(type="text", name="movie[summary]")
+				.form-group
+					.col-sm-offset-2.col-sm-60
+					button.btn.btn-default(type="submit") 录入
