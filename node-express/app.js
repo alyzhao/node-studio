@@ -16,7 +16,7 @@ const app = express();
 app.set('views', './views/pages');
 app.set('view engine', 'jade');
 app.locals.moment = require('moment');
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(serveStatic('bower_components'));
 app.listen(port);
 
@@ -79,11 +79,15 @@ app.get('/admin/update/:id', function(req, res) {
 
 // admin post movie
 app.post('/admin/movie/new', function(req, res) {
-	let id = req.body.movie._id;
+	let id = undefined;
+	// if (req.body.movie.hasOwnProperty('_id')) {
+	id = req.body.movie._id;	
+	// }
+	console.log(req.body.movie);
 	let movieObj = req.body.movie;
 	let _movie;
 
-	if (id != 'undefined') {
+	if (id) {
 		Movie.findById(id, function(err, movie) {
 			if (err) {
 				console.log(err);
