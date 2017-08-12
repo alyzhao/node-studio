@@ -100,7 +100,7 @@
 	mixin attrs(name)
 		p&attributes(attributes) #{name}
 	+attrs('attrs')(class='magic', id='jade-attr')
-	// 多个参数时
+	// 多个参数时	
 	mixin magic(name, ...items)
 		ul(class='#{name}')
 			each item in items
