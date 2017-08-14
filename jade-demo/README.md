@@ -71,7 +71,9 @@
 			p Hi #{name}
 	```
 8. mixins
-	> (1). 定义和使用mixin
+
+	(1). 定义和使用mixin
+
 	```
 	mixin hello
 		p hello mixin
@@ -91,7 +93,9 @@
 			+skill(people.name, people.skills)
 	+group({name: 'zhao', skills: ['node', 'express']})
 	```
-	> (2). 传递属性
+
+	(2). 传递属性
+
 	```
 	mixin attr(name)
 		p(class!=attributes.class) #{name}
