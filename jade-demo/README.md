@@ -73,7 +73,6 @@
 8. mixins
 
 	(1). 定义和使用mixin
-
 	```
 	mixin hello
 		p hello mixin
@@ -95,7 +94,6 @@
 	```
 
 	(2). 传递属性
-
 	```
 	mixin attr(name)
 		p(class!=attributes.class) #{name}
