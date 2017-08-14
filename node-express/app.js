@@ -128,7 +128,7 @@ app.post('/admin/movie/new', function(req, res) {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(num);
+				console.log(num); 	// 返回一个对象里面具体参数看API, 不是修改的行数
 			}
 		})*/
 		Movie.findById(id, (err, movie) => {
