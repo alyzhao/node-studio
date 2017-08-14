@@ -1,6 +1,8 @@
-extend ../layout
+extends ../layout
 
 block content
+	style(type="text/css").
+		.thumbnail{width: 20%}
 	.container
 		.row
 			each item in movies
@@ -9,6 +11,5 @@ block content
 						a(href="/movie/#{item._id}")
 							img(src="#{item.poster}", alt="#{item.title}")
 						.captain
-							h3 #{title}
-							p: a.btn.btn-primary(href="/movie/#{item._id}", role="button")
-								观看预告片
+							h3 #{item.title}
+							p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片

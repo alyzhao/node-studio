@@ -116,5 +116,31 @@
 				li= item
 	+magic('node', 'express', 'jade', 'ejs')
 	```
+9. 模板的继承
+	
+	(1). block定义的方式
+	```
+	block desc 		//- 定义
+	p block extends
+	block desc		//- 引用
+	```
+
+	(2). extends的使用
+	```
+	//- demo.jade
+	extends layout
+	block content
+	...
+
+	//- layout.jade
+	...
+	block content
+	```
+10. 模板的包含
+	
+	(1). include的使用
+11. 
+
+
 
 

@@ -1,99 +1,102 @@
-doctype html
-html
-	head
-		title hello #{title.toUpperCase()}
-		style(type='text/css').
-			h1 {color: #3385ff}
-		script(type='text/javascript').
-			document.writeln('jade');
-	body
-		- var obj = {'name': 'zhao', 'age': 22};
-		- for (var k in obj) 
-			p= obj[k]
-		- each value, key in obj
-			p #{key}: #{value}
-		- each item in obj
-			p= item
-
-		- var lists = [{id: 1,items: ['a', 'b']},{id: 2,items: ['c', 'd']},{id: 3,items: ['e', 'f']}];
-		dl
-			each list in lists
-				dt= list.id
-				each item in list.items
-					dd=items
-		- var n = 0;
-		while n < 3
-			p= n++
-
-		h3 switch
-		- var name = 'jade';
-		case name 
-			when 'java'
-			when 'node'
-				p Hi node!
-			when 'jade': p Hi jade
-			default 
-				p Hi #{name} 
-
-		unless false
-			p unless
-
-		h3 mixin
-		mixin hello
-			p hello mixin
-		+hello
-
-		mixin skill(name, skills)
-			p #{name}
-			ul.skills
-				each skill in skills
-					li= skill
-		+skill('zhao', ['node', 'express'])
-
-		//- 嵌套
-		mixin group(people)
-			div.group
-				h4 #{people.name}
-				+skill(people.name, people.skills)
-
-		+group({name: 'zhao', skills: ['node', 'express']})
-
-		//- 内联
-		mixin team(slogon)
-			h4 #{slogon}
-			if block
-				block
-			else 
-				p no team
-		+team('slogon')
-			p GGGOOD!
-
-		//- 传递属性
-		mixin attr(name)
-			p(class!=attributes.class) #{name}
-		+attr('attr')(class='magic')
-
-		mixin attrs(name)
-			p&attributes(attributes) #{name}
-		+attrs('attrs')(class='magic', id='jade-attr')
-
-		mixin magic(name, ...items)
-			ul(class='#{name}')
-				each item in items
-					li= item
-		+magic('node', 'express', 'jade', 'ejs')
+extends layout
+block content
+	h3 模板继承	
+	block desc 
+		p desc from demo
 
 
+	h3 test
+	p: a.btn(href="test.com")
+		标签
 
 
-		h3 bottom
-		h1 hello jade
-		h2 helllo #{title}
-		p json #{title}
-		#test-div.red-border(style='border: 1px solid red') test-div
-		p
-			strong 这才是强调
-			|1. aa
-			span 这是强调
-			|2. bb
-			|3. cc
+	- var obj = {'name': 'zhao', 'age': 22};
+	- for (var k in obj) 
+		p= obj[k]
+	- each value, key in obj
+		p #{key}: #{value}
+	- each item in obj
+		p= item
+
+	- var lists = [{id: 1,items: ['a', 'b']},{id: 2,items: ['c', 'd']},{id: 3,items: ['e', 'f']}];
+	dl
+		each list in lists
+			dt= list.id
+			each item in list.items
+				dd=items
+	- var n = 0;
+	while n < 3
+		p= n++
+
+	h3 switch
+	- var name = 'jade';
+	case name 
+		when 'java'
+		when 'node'
+			p Hi node!
+		when 'jade': p Hi jade
+		default 
+			p Hi #{name} 
+
+	unless false
+		p unless
+
+	h3 mixin
+	mixin hello
+		p hello mixin
+	+hello
+
+	mixin skill(name, skills)
+		p #{name}
+		ul.skills
+			each skill in skills
+				li= skill
+	+skill('zhao', ['node', 'express'])
+
+	//- 嵌套
+	mixin group(people)
+		div.group
+			h4 #{people.name}
+			+skill(people.name, people.skills)
+
+	+group({name: 'zhao', skills: ['node', 'express']})
+
+	//- 内联
+	mixin team(slogon)
+		h4 #{slogon}
+		if block
+			block
+		else 
+			p no team
+	+team('slogon')
+		p GGGOOD!
+
+	//- 传递属性
+	mixin attr(name)
+		p(class!=attributes.class) #{name}
+	+attr('attr')(class='magic')
+
+	mixin attrs(name)
+		p&attributes(attributes) #{name}
+	+attrs('attrs')(class='magic', id='jade-attr')
+
+	mixin magic(name, ...items)
+		ul(class='#{name}')
+			each item in items
+				li= item
+	+magic('node', 'express', 'jade', 'ejs')
+
+
+
+
+	h3 bottom
+	h1 hello jade
+	h2 helllo #{title}
+	p json #{title}
+	#test-div.red-border(style='border: 1px solid red') test-div
+	p
+		strong 这才是强调
+		|1. aa
+		span 这是强调
+		|2. bb
+		|3. cc

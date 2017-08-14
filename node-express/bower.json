@@ -1,0 +1,25 @@
+{
+  "name": "node-expresss",
+  "description": "learn node and express",
+  "main": "app.js",
+  "authors": [
+    "CaptainZhao"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "node.js",
+    "javascript"
+  ],
+  "homepage": "https://github.com/gegehehehe/node-studio",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+      "bootstrap": "~3.2.0",
+      "jquery": "~1.9.0"
+  }
+}
