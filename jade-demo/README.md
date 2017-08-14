@@ -21,6 +21,7 @@
 	(3). 在父元素注释, 另起一行//-, 就是块注释
 4. style. script. 用来表示样式和脚本
 5. 申明变量, 并传递参数
+
 	(1). 从命令行向jade传递参数, 当前文档申明的变量优先级最高
 	```
 	jade demo.jade -P -w --obj '{"title": "jade"}'
@@ -34,7 +35,7 @@
 	(1). #{variable} 与 = variable 都是转义, 标签会被转义成字符, 如果variable未定义, #{}会输出undefined, = 会输出空
 
 	(2). !{variable} 与 != variable 是非转义, 标签会被输出
-	
+
 	(3). \#{variable} 输出#和{}
 	```
 	- var htmlDate = '<script>alert(1);</script>'
