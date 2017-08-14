@@ -13,8 +13,11 @@
 	input.text-input.input#username(name='username', type='text', placehold='your name')
 	```
 3. 注释
+
 	(1). 单行注释 //, 会编译成html的注释 
+
 	(2). 无缓存注释 //-, 不会编译成注释
+
 	(3). 在父元素注释, 另起一行//-, 就是块注释
 4. style. script. 用来表示样式和脚本
 5. 申明变量, 并传递参数
@@ -27,8 +30,11 @@
 	jade demo01.jade -P -w -O test.json	
 	```
 6. 转义与非转义
+
 	(1). #{variable} 与 = variable 都是转义, 标签会被转义成字符, 如果variable未定义, #{}会输出undefined, = 会输出空
+
 	(2). !{variable} 与 != variable 是非转义, 标签会被输出
+	
 	(3). \#{variable} 输出#和{}
 	```
 	- var htmlDate = '<script>alert(1);</script>'
