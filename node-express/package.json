@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/gegehehehe/node-studio"
+    "url": "git+https://github.com/gegehehehe/node-studio.git"
   },
   "license": "MIT",
   "engines": {
@@ -20,10 +20,7 @@
     "email": "995029442@qq.com"
   },
   "contributors": [
-    {
-      "name": "CaptainZhao",
-      "email": "995029442@qq.com"
-    }
+    "CaptainZhao <995029442@qq.com>"
   ],
   "scripts": {
     "start": "node app.js"
@@ -35,5 +32,8 @@
     "mpromise": "^0.5.5",
     "serve-static": "^1.12.3",
     "underscore": "^1.8.3"
-  }
+  },
+  "homepage": "https://github.com/gegehehehe/node-studio#readme",
+  "main": "app.js",
+  "devDependencies": {}
 }

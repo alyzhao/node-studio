@@ -10,15 +10,15 @@ var Movie = require('./models/movies.js');
 
 
 const port = process.env.PORT || 3000; 	// 获取全局变量PORT的值, 在命令行下 PORT = 5200 node app.js, 即可赋值
-const serveStatic = require('serve-static');
-const bodyParser = require('body-parser');
+const serveStatic = require('serve-static');	// 这些是中间件
+const bodyParser = require('body-parser');		
 const app = express();
 
 app.set('views', './views/pages');	// 查找动态文件的目录
 app.set('view engine', 'jade');
 app.locals.moment = require('moment');
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(serveStatic('bower_components')); 		// 加载静态目录时在这儿查找
+app.use(bodyParser.urlencoded({extended: true}));		// 使用中间件
+app.use(serveStatic('public')); 		// 加载静态目录时在这儿查找
 app.listen(port);
 
 console.log('app started on port ' + port);
@@ -64,6 +64,22 @@ app.get('/admin/movie', (req, res) => {
 		}
 	})
 });
+
+// 删除记录
+app.delete('/admin/delete/', (req, res) => {
+	let id = req.query.id;
+	console.log(id);
+	Movie.remove({_id: id}, (err, result) => {
+		let success = 1;
+		if (err) {
+			console.log(err);
+			succes = 0;
+		} else {
+			console.log(result);
+		}
+		res.json({success: success});
+	})
+})
 
 // 
 app.get('/admin/update/:id', function(req, res) {
