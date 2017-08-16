@@ -35,4 +35,16 @@
 	app.locals 存在于整个生命周期
 	res.locals 存在于路由当中
 
+## 获取前台传递的参数
+	```
+	app.get('/:id', function(req res) {
+		let id = req.body.userid; 		// 获取post过来的参数
+		let id = req.query.userid; 		// 获取get过来的参数
+		let id = req.parmas.id; 		// 获取路由当中的id
+
+		let id = req.parma('userid');	// express封装, 优先级 router > post > get
+	})
+
+	```
+
 

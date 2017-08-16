@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/node',{useMongoClient:true});
 mongoose.Promise = global.Promise;  
 var Movie = require('./models/movies.js');
+var User = require('./models/user.js');
 
 
 const port = process.env.PORT || 3000; 	// 获取全局变量PORT的值, 在命令行下 PORT = 5200 node app.js, 即可赋值
@@ -36,6 +37,22 @@ app.get('/', (req, res) => {
 		})
 	})
 });
+
+// 用户注册
+app.post('/user/signup/', (req, res) => {
+	let user = req.body.user;
+	console.log(user);
+	let userDoc = new User({
+		name: user.name,
+		password: user.password
+	});
+	userDoc.save((err, user) => {
+		if (err) return err;
+		console.log(user);
+		res.redirect('/admin/userlist/')
+	})
+});
+
 // 详情页, detail 
 app.get('/movie/:id', (req, res) => {
 	let id = req.params.id;		// 获得参数
@@ -45,6 +62,19 @@ app.get('/movie/:id', (req, res) => {
 			movie: movie
 		})
 	});
+});
+
+// 用户详情页
+app.get('/admin/userlist', (req, res) => {
+	User.fetch((err, users) => {
+		if (err) {
+			console.log(err);
+		} else {
+			res.render('userlist', {
+				users: users
+			})
+		}
+	})
 });
 
 // 后台路由, 添加admin
@@ -194,7 +224,6 @@ app.post('/admin/movie/new', function(req, res) {
 	// 	});
 	// }
 })
-
 
 // 
 app.get('/admin/list', (req, res) => {

@@ -26,6 +26,8 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "bcrypt": "^1.0.2",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "express": "latest",
     "mongoose": "latest",
@@ -35,5 +37,10 @@
   },
   "homepage": "https://github.com/gegehehehe/node-studio#readme",
   "main": "app.js",
-  "devDependencies": {}
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-concurrent": "^2.3.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-nodemon": "^0.4.2"
+  }
 }
