@@ -47,4 +47,7 @@
 
 	```
 
+## jade
+> jade 的 if else 渲染会把if else 下的代码块渲染成和if else 相同的层级, 即缩进和if else 相同
+
 
