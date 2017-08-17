@@ -19,6 +19,15 @@ var UserSchema = new mongoose.Schema({
 	}
 })
 
+UserSchema.methods = {
+	comparePassword: function(_password, cb) {
+		bcrypt.compare(_password, this.password, function(err, isMatch) {
+			if (err) return cb(err);
+			cb(null, isMatch);
+		})
+	}
+}
+
 // 串行中间件, 在每次调用save的方法的时候都会执行
 UserSchema.pre('save', function(next) {
 	let user = this;

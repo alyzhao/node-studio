@@ -2,6 +2,10 @@ const express = require('express');
 const path = require('path');
 const _ = require('underscore');
 
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+
+
 // mongodb
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/node',{useMongoClient:true});
@@ -18,6 +22,12 @@ const app = express();
 app.set('views', './views/pages');	// 查找动态文件的目录
 app.set('view engine', 'jade');
 app.locals.moment = require('moment');
+
+app.use(cookieParser())
+app.use(session({
+	secret: 'node-express'
+}));
+
 app.use(bodyParser.urlencoded({extended: true}));		// 使用中间件
 app.use(serveStatic('public')); 		// 加载静态目录时在这儿查找
 app.listen(port);
@@ -26,11 +36,12 @@ console.log('app started on port ' + port);
 
 // 路由, 首页, index
 app.get('/', (req, res) => {
+	console.log(req.session);
+	console.log(req.session.user);
 	Movie.fetch(function(err, movies) {
 		if (err) {
 			console.log(err);
 		}
-		console.log(movies);
 		res.render('index', {
 			title: 'node 首页',
 			movies: movies
@@ -42,16 +53,43 @@ app.get('/', (req, res) => {
 app.post('/user/signup/', (req, res) => {
 	let user = req.body.user;
 	console.log(user);
-	let userDoc = new User({
-		name: user.name,
-		password: user.password
-	});
-	userDoc.save((err, user) => {
-		if (err) return err;
-		console.log(user);
-		res.redirect('/admin/userlist/')
+	User.findOne({name: user.name}, (err, result) => {
+		if (!err && result) {
+			res.redirect('/');
+		} else {
+			let userDoc = new User({
+				name: user.name,
+				password: user.password
+			});
+			userDoc.save((err, result) => {
+				if (err) return err;
+				console.log(result);
+				res.redirect('/admin/userlist/')
+			})				
+		}
 	})
 });
+
+// 用户登录
+app.post('/user/signin/', (req, res) => {
+	let user = req.body.user;
+	User.findOne({name: user.name}, (err, result) => {
+		if (!err && result) {
+			result.comparePassword(user.password, (err, isMatch) => {
+				if (!err && isMatch) {
+					console.log('password is pass!');
+					req.session.user = result; 	// 设置session
+					res.redirect('/');
+				} else {
+					console.log('password is wrong!');
+				}
+			})
+		} else {
+			console.log('no user!')
+		}
+	})
+
+})
 
 // 详情页, detail 
 app.get('/movie/:id', (req, res) => {
