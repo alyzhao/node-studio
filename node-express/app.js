@@ -20,6 +20,10 @@ const port = process.env.PORT || 3000; 	// 获取全局变量PORT的值, 在命�
 const serveStatic = require('serve-static');	// 这些是中间件
 const app = express();
 
+// post参数解析
+const bodyParser = require('body-parser');		
+app.use(bodyParser.urlencoded({extended: true}));		// 使用中间件
+
 // 存储sesion
 app.use(cookieParser());
 app.use(session({
@@ -34,7 +38,7 @@ app.use(session({
 
 
 
-app.set('views', './views/pages');	// 查找动态文件的目录
+app.set('views', './app/views/pages');	// 查找动态文件的目录
 app.set('view engine', 'jade');
 app.locals.moment = require('moment');
 
