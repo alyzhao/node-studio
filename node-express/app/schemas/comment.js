@@ -4,9 +4,14 @@ var ObjectId = Schema.Types.ObjectId;
 
 
 var CommentSchema = new mongoose.Schema({
-	movie: {type: ObjectId, ref: 'Movie'},
-	from: {type: ObjectId, ref: 'User'},
-	to: {type: ObjectId, ref: 'User'}
+	movie: {type: ObjectId, ref: 'movies'},
+	from: {type: ObjectId, ref: 'user'},
+	to: {type: ObjectId, ref: 'user'},
+	reply: [{
+		from: {type: ObjectId, ref: 'user'},
+		to: {type: ObjectId, ref: 'user'},
+		content: String
+	}],
 	content: String,
 	meta: {
 		createAt: {

@@ -2,6 +2,7 @@
 var Movie = require('../app/controllers/movie.js');
 var Index = require('../app/controllers/index.js');
 var User = require('../app/controllers/user.js');
+var Comment = require('../app/controllers/comment.js');
 const _ = require('underscore');
 	
 module.exports = function(app) { 
@@ -39,4 +40,12 @@ module.exports = function(app) {
 	app.post('/admin/movie/new', User.signinRequired, User.roleRequired, Movie.newMovie);
 	// 
 	app.get('/admin/list', User.signinRequired, User.roleRequired, Movie.movieList);
+
+
+
+	//评论
+	app.post('/user/comment/', User.signinRequired, Comment.save)
+
+
+
 }

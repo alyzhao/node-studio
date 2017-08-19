@@ -1,5 +1,6 @@
 var Movie = require('../models/movies.js');
 const _ = require('underscore');
+var Comment = require('../models/comment');
 
 // 详情页, detail 
 exports.detail = function(req, res) {
@@ -8,10 +9,20 @@ exports.detail = function(req, res) {
 		if (!movie) {
 			res.send('非法的路径！');
 		} else {
-			res.render('detail', {
-				title: 'imooc' + movie.title,
-				movie: movie
-			})
+
+			Comment
+				.find({movie: id})
+				.populate('from', 'name')	// 第二个参数为需要获取的字段, 默认为所有字段, 会附带上_id
+				.populate('reply.from reply.to', 'name')
+				.exec(function(err, comments) {
+					console.log(comments);
+					res.render('detail', {
+						title: 'captain ' + movie.title,
+						movie: movie,
+						comments: comments
+					})
+
+				});
 		}
 	});
 };
