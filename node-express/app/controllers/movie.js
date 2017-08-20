@@ -15,7 +15,10 @@ exports.detail = function(req, res) {
 				.populate('from', 'name')	// 第二个参数为需要获取的字段, 默认为所有字段, 会附带上_id
 				.populate('reply.from reply.to', 'name')
 				.exec(function(err, comments) {
-					console.log(comments);
+					console.log('comments: -----')
+					comments.forEach((item, index) => {
+						console.log(item.reply);
+					})
 					res.render('detail', {
 						title: 'captain ' + movie.title,
 						movie: movie,

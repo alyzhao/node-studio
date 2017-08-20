@@ -3,6 +3,7 @@ var Movie = require('../app/controllers/movie.js');
 var Index = require('../app/controllers/index.js');
 var User = require('../app/controllers/user.js');
 var Comment = require('../app/controllers/comment.js');
+var Category = require('../app/controllers/category');
 const _ = require('underscore');
 	
 module.exports = function(app) { 
@@ -48,4 +49,8 @@ module.exports = function(app) {
 
 
 
+	// category
+	app.get('/admin/category/new/', User.signinRequired, User.roleRequired, Category.new);
+	app.post('/admin/category/', User.signinRequired, User.roleRequired, Category.save);
+	app.get('/admin/category/list', User.signinRequired, User.roleRequired, Category.list);
 }
