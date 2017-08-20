@@ -10,6 +10,7 @@ exports.index = function(req, res) {
 			if (err) {
 				console.log(err);
 			}
+			console.log(categories);
 			res.render('index', {
 				title: '首页',
 				categories: categories

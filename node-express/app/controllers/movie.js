@@ -1,6 +1,7 @@
 var Movie = require('../models/movies.js');
 const _ = require('underscore');
 var Comment = require('../models/comment');
+var Category = require('../models/category');
 
 // 详情页, detail 
 exports.detail = function(req, res) {
@@ -32,19 +33,23 @@ exports.detail = function(req, res) {
 
 // 后台路由, 添加admin
 exports.movie = function(req, res) {
-	res.render('admin', {
-		title: 'node 后台',
-		movie: {
-			title: '',
-			doctor: '',
-			country: '',
-			title: '',
-			year: '',
-			poster: '',
-			language: '',
-			flash: '',
-			summary: ''
-		}
+	Category.find({}, (err, categories) => {
+		res.render('admin', {
+			title: 'node 后台',
+			categories: categories,
+			movie: {
+				title: '',
+				doctor: '',
+				country: '',
+				title: '',
+				year: '',
+				poster: '',
+				language: '',
+				flash: '',
+				summary: '',
+				categoryName: ''
+			}
+		})		
 	})
 };
 
@@ -70,13 +75,25 @@ exports.update = function(req, res) {
 	console.log(id);
 
 	if (id) {
-		Movie.findById(id, function(err, movie) {
-			console.log(movie);
-			res.render('admin', {
-				title: 'node 后台更新页',
-				movie: movie	
+		Movie
+			.find({})
+			.populate('category', 'name')
+			.exec(function(err, movie) {
+				console.log('movies: -----');
+				console.log(movie);
+				res.render('admin', {
+					title: 'node 后台更新页',
+					movie: movie
+				})
+
 			})
-		})
+		// Movie.findById(id, function(err, movie) {
+		// 	console.log(movie);
+		// 	res.render('admin', {
+		// 		title: 'node 后台更新页',
+		// 		movie: movie	
+		// 	})
+		// })
 	}
 
 };
@@ -94,30 +111,54 @@ exports.newMovie = function(req, res) {
 	console.log("电影id: " + id);
 	let _movie;
 
-	if (id == 'undefined') {
+	if (!id) {
 		console.log('添加影片');
 
-		let newRecord = new Movie({
-			doctor: movieObj.doctor,
-			title: movieObj.title,
-			language: movieObj.language,
-			country: movieObj.country,
-			summary: movieObj.summary,
-			flash: movieObj.flash,
-			poster: movieObj.poster,
-			year: movieObj.year
-		})
+		if (movieObj.categoryName) {
+			let newCat = new Category({
+				name: movieObj.categoryName,
+			});
+			newCat.save((err, cat) => {
+				if(err) console.log(err);
+				saveMovie(cat._id, cat);
+			})
+		} else {
+			saveMovie();
+		}
 
-		newRecord.isNew = true;
-
-		newRecord.save((err, document) => {
-			if (err) {
-				console.log(err)
-			} else {
-				res.redirect('/movie/' + document._id);
+		function saveMovie(categoryId, cat) {
+			if (categoryId) {
+				movieObj.category = categoryId;
 			}
-		})
+			let newRecord = new Movie(movieObj);
+			newRecord.isNew = true;
 
+			newRecord.save((err, document) => {
+				if (err) {
+					console.log(err)
+				} else {
+					if (cat) {
+						cat.movies.push(document._id);
+						cat.save((err, newCat) => {
+							console.log('new category: ');
+							console.log(newCat);
+							res.redirect('/movie/' + document._id);
+						})
+					} else {
+						Category.findById(movieObj.category, (err, cate) => {
+							if (!err) {
+								console.log(cate);
+								cate.movies.push(document._id);
+								cate.save((err, catee) => {
+									console.log(catee);
+									res.redirect('/movie/' + document._id);						
+								});
+							}
+						})
+								}
+				}
+			});
+		}
 	} else {
 		console.log('修改影片');
 		/* 如果直接这样修改会使得meta失去createAt
