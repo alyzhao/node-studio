@@ -47,7 +47,7 @@ exports.movie = function(req, res) {
 				language: '',
 				flash: '',
 				summary: '',
-				categoryName: ''
+				category: {name: ''}
 			}
 		})		
 	})
@@ -76,16 +76,19 @@ exports.update = function(req, res) {
 
 	if (id) {
 		Movie
-			.find({})
+			.findOne({_id: id})
 			.populate('category', 'name')
 			.exec(function(err, movie) {
 				console.log('movies: -----');
 				console.log(movie);
-				res.render('admin', {
-					title: 'node 后台更新页',
-					movie: movie
+				Category.fetch((err, categories) => {
+					if (err) console.log(err);
+						res.render('admin', {
+						title: 'node 后台更新页',
+						movie: movie,
+						categories: categories
+					})
 				})
-
 			})
 		// Movie.findById(id, function(err, movie) {
 		// 	console.log(movie);
@@ -135,7 +138,7 @@ exports.newMovie = function(req, res) {
 
 			newRecord.save((err, document) => {
 				if (err) {
-					console.log(err)
+					console.log(err);
 				} else {
 					if (cat) {
 						cat.movies.push(document._id);
@@ -143,7 +146,7 @@ exports.newMovie = function(req, res) {
 							console.log('new category: ');
 							console.log(newCat);
 							res.redirect('/movie/' + document._id);
-						})
+						});
 					} else {
 						Category.findById(movieObj.category, (err, cate) => {
 							if (!err) {
@@ -154,8 +157,8 @@ exports.newMovie = function(req, res) {
 									res.redirect('/movie/' + document._id);						
 								});
 							}
-						})
-								}
+						});
+					}		
 				}
 			});
 		}
@@ -172,7 +175,8 @@ exports.newMovie = function(req, res) {
 			}
 		})*/
 		Movie.findById(id, (err, movie) => {
-			let _movie = _.extend(movie, movieObj);
+			let _movie = _.extend(movie, movieObj);		// 复制movieObj对象中的所有属性覆盖到movie对象上，并且返回 movie 对象. 复制是按顺序的, 所以后面的对象属性会把前面的对象属性覆盖掉(如果有重复).
+			console.log(movie);
 			_movie.isNew = false;
 			_movie.save((err, result) => {
 				if (!err) {
@@ -181,7 +185,6 @@ exports.newMovie = function(req, res) {
 				}
 			})
 		})
-
 	}
 
 	// if (id) {

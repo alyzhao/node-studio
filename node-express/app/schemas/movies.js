@@ -12,7 +12,7 @@ var MovieSchema = new Schema({
 	flash: String,
 	poster: String,
 	year: Number,
-	category: {type: ObjectId, ref: 'category'},
+	category: {type: ObjectId, ref: 'Category'},	// ref是Model名
 	meta: {
 		createAt: {
 			type: Date,

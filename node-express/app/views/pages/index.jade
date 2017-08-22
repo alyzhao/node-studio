@@ -3,6 +3,10 @@ extends ../layout
 block content
 	style(type="text/css").
 		//- .thumbnail{width: 20%}
+		h3{margin: 0}
+		.captain * {text-align: center;}
+		.captain > h3, .captain > p{margin-top: 10px;}
+
 	.container
 		.row
 			each cat in categories
@@ -11,7 +15,7 @@ block content
 						h3 #{cat.name}
 					.panel-body
 						if cat.movies && cat.movies.length > 0
-							each item in movies
+							each item in cat.movies
 								.col-md-2
 									.thumbnail
 										a(href="/movie/#{item._id}")
