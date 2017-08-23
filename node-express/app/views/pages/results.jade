@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+	style(type="text/css").
+		//- .thumbnail{width: 20%}
+		h3{margin: 0}
+		.captain * {text-align: center;}
+		.captain > h3, .captain > p{margin-top: 10px;}
+
+	.container(style="margin-bottom: 50px;")
+		.row
+			.panel.panel-primary
+				.panel-heading
+					h3 #{category.name}
+				.panel-body
+					if category.movies && category.movies.length > 0
+						each item in category.movies
+							.col-md-2
+								.thumbnail
+									a(href="/movie/#{item._id}")
+										img(src="#{item.poster}", alt="#{item.title}")
+									.captain
+										h3 #{item.title}
+										p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片
+			ul.pagination
+				- for(let i = 0; i < totalPage; i++) {
+					- if (currentPage == i + 1) {
+						li.active
+							span #{currentPage}
+					- } else {
+						li
+							a(href="/results?#{query}&p=#{i + 1}") #{i + 1}
+					- }
+				- }										

@@ -1,8 +1,10 @@
 doctype
-heml
+html
 	head
 		meta(charset="utf-8")
 		title #{title}
+		style(type="text/css").
+			.thumbnail a > img{width: 150px; height: 225px !important;}
 		include ./includes/head
 	body
 		include ./includes/header

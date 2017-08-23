@@ -53,4 +53,8 @@ module.exports = function(app) {
 	app.get('/admin/category/new/', User.signinRequired, User.roleRequired, Category.new);
 	app.post('/admin/category/', User.signinRequired, User.roleRequired, Category.save);
 	app.get('/admin/category/list', User.signinRequired, User.roleRequired, Category.list);
+
+
+	// results
+	app.get('/results/', Index.search)
 }

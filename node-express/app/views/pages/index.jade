@@ -6,13 +6,14 @@ block content
 		h3{margin: 0}
 		.captain * {text-align: center;}
 		.captain > h3, .captain > p{margin-top: 10px;}
-
-	.container
+		.panel-heading > h3 > a{color: #fff;}
+	.container(style="margin-bottom: 50px;")
 		.row
 			each cat in categories
 				.panel.panel-primary
 					.panel-heading
-						h3 #{cat.name}
+						h3
+							a(href="/results?cat=#{cat._id}&p=1") #{cat.name}
 					.panel-body
 						if cat.movies && cat.movies.length > 0
 							each item in cat.movies

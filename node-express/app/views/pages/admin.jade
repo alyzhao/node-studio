@@ -1,11 +1,15 @@
 extends ../layout
 
 block content
-	.container
+	.container(style="margin-bottom: 50px")
 		.row
 			form.form-horizontal(method="post", action="/admin/movie/new")
 				if movie._id
 					input(type="hidden", name="movie[_id]", value=movie._id)
+				.form-group
+					label.col-sm-3.control-label(for="inputDouban") 豆瓣同步
+					.col-sm-6
+						input#inputDouban.form-control(type="text")
 				.form-group
 					label.col-sm-3.control-label(for="inputCategory") 电影分类
 					.col-sm-6
@@ -58,3 +62,4 @@ block content
 				.form-group
 					.col-sm-offset-2.col-sm-60
 					button.btn.btn-default(type="submit") 录入
+	script(type="text/javascript", src="/js/admin.js")
