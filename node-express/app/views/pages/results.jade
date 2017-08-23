@@ -11,10 +11,11 @@ block content
 		.row
 			.panel.panel-primary
 				.panel-heading
-					h3 #{category.name}
+					h3 #{keyword}
 				.panel-body
-					if category.movies && category.movies.length > 0
-						each item in category.movies
+					- let _movies = (category && category.movies) || movies;
+					if _movies && _movies.length > 0
+						each item in _movies
 							.col-md-2
 								.thumbnail
 									a(href="/movie/#{item._id}")
