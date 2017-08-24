@@ -4,8 +4,28 @@ var Index = require('../app/controllers/index.js');
 var User = require('../app/controllers/user.js');
 var Comment = require('../app/controllers/comment.js');
 var Category = require('../app/controllers/category');
+const path = require('path');
 const _ = require('underscore');
-	
+const multer = require('multer');
+// const upload = multer({dest: '/public/uploads/'});
+let storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		console.log('destination: ');
+		let postPath = path.join(__dirname, '../', '/public/upload/');
+		console.log(postPath);
+		console.log(__dirname);
+		cb(null, postPath);
+	},
+	filename: function(req, file, cb) {
+		console.log('filename: ');
+		console.log(file);
+		let type = file.originalname.split('.')[1];
+		cb(null, 'poster' + Date.now() + '.' + type);
+	}
+}) 
+let upload = multer({ storage: storage });
+
+
 module.exports = function(app) { 
 	app.use((req, res, next) => {
 		app.locals.user = req.session.user;
@@ -38,7 +58,7 @@ module.exports = function(app) {
 	// 
 	app.get('/admin/update/:id', User.signinRequired, User.roleRequired, Movie.update);
 	// admin post movie
-	app.post('/admin/movie/new', User.signinRequired, User.roleRequired, Movie.newMovie);
+	app.post('/admin/movie/new', User.signinRequired, User.roleRequired, upload.single('uploadPoster'), Movie.savePoster, Movie.newMovie);
 	// 
 	app.get('/admin/list', User.signinRequired, User.roleRequired, Movie.movieList);
 

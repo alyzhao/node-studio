@@ -42,6 +42,13 @@ module.exports = function(grunt) {
 			src:['test/**/*.js']
 		},
 
+		mochaTest: {
+			options: {
+				reporter: 'spec'
+			},
+			src: ['test/**/*.js']
+		}
+
 		concurrent:{
 			tasks:['nodemon','watch'],
 			options:{
@@ -56,4 +63,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.option('force', true);
 	grunt.registerTask('default', ['concurrent']);
+
+	grunt.loadNpmTasks('grunt-mocha-test');
+	grunt.registerTask('test', ['mochaTest']);
 }

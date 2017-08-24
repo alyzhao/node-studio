@@ -37,7 +37,6 @@ app.use(session({
 }));	
 
 
-
 app.set('views', './app/views/pages');	// 查找动态文件的目录
 app.set('view engine', 'jade');
 app.locals.moment = require('moment');

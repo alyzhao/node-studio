@@ -2,15 +2,19 @@ var Movie = require('../models/movies.js');
 const _ = require('underscore');
 var Comment = require('../models/comment');
 var Category = require('../models/category');
+const fs = require('fs');
+const path = require('path');
 
 // 详情页, detail 
 exports.detail = function(req, res) {
 	let id = req.params.id;		// 获得参数
+	Movie.update({_id: id}, {$inc: {pv: 1}}, (err) => {		// 累加
+		if (err) console.log(err);
+	})
 	Movie.findById(id, function(err, movie) {
 		if (!movie) {
 			res.send('非法的路径！');
 		} else {
-
 			Comment
 				.find({movie: id})
 				.populate('from', 'name')	// 第二个参数为需要获取的字段, 默认为所有字段, 会附带上_id
@@ -101,6 +105,42 @@ exports.update = function(req, res) {
 
 };
 
+//admin poster
+exports.savePoster = function(req, res, next) {
+	let file = req.file;
+	console.log(file);
+	let filename = file.filename;
+	if (filename) {
+		req.poster = '/upload/' + filename;
+		next();
+	} else {
+		next();
+	}
+	// console.log(req);
+	// let posterData = req.file.uploadPoster,
+	// 	filePath = posterData.path,
+	// 	originalFilename = posterData.orifinalFilename;
+	// console.log(posterData);
+	// if (originalFilename) {
+	// 	console.log('original');
+	// 	next();
+		// fs.readFile(filePath, function(err, data) {
+		// 	let timestamp = Date.now(),
+		// 		type = posterData.type.split('/')[1],
+		// 		poster = timestamp + '.' + type,
+		// 		newPath = path.join(__dirname, '../../', '/public/upload/' + poster);
+		// 	console.log(posterData.type);
+		// 	console.log(__dirname);
+		// 	fs.writeFile(newPath, data, function(err) {
+		// 		req.poster = poster;
+		// 		next();
+		// 	})
+		// })
+	// } else {
+	// 	next();
+	// }
+}
+
 // admin post movie
 exports.newMovie = function(req, res) {
 	// post过来的是一个对象movie
@@ -113,6 +153,9 @@ exports.newMovie = function(req, res) {
 	let id = movieObj._id; 		// id是以字符串的形式传递的
 	console.log("电影id: " + id);
 	let _movie;
+	if (req.poster) {
+		movieObj.poster = req.poster;
+	}
 
 	if (!id) {
 		console.log('添加影片');
