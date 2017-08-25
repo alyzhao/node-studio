@@ -19,10 +19,10 @@ $ bower install bootstrap --save, 在bower.json中更改包版本在bower instal
 常见的命令
 
 ```sh
-$ bower list   				查看导入的包
+$ bower list   					查看导入的包
 $ bower cache list  			查看缓存的包
 $ bower uninstall jquery		删除jquery
-$ bower update jquery		更新jquery
+$ bower update jquery			更新jquery
 $ bower info jquery 			查看jquery信息库
 $ bower home jquery 			浏览器打开jquery主页
  ```
@@ -31,7 +31,7 @@ $ bower home jquery 			浏览器打开jquery主页
 
 ```sh
 $ show dbs  				查看所有数据库
-$ use xxdb 				切换db
+$ use xxdb 					切换db
 $ db 						查看当前db
 $ show collections			查看当前db下的所有collection
 ```
