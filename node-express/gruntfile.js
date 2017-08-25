@@ -35,20 +35,6 @@ module.exports = function(grunt) {
 			}
 		},
 
-		mochaTest:{
-			options:{
-				reporter:'spec' // 测试脚本后缀名为.test.js（表示测试）或者.spec.js（表示规格）
-			},
-			src:['test/**/*.js']
-		},
-
-		mochaTest: {
-			options: {
-				reporter: 'spec'
-			},
-			src: ['test/**/*.js']
-		}
-
 		concurrent:{
 			tasks:['nodemon','watch'],
 			options:{
@@ -63,7 +49,4 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.option('force', true);
 	grunt.registerTask('default', ['concurrent']);
-
-	grunt.loadNpmTasks('grunt-mocha-test');
-	grunt.registerTask('test', ['mochaTest']);
 }

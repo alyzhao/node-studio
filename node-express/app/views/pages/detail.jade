@@ -1,7 +1,15 @@
 extends ../layout
 
 block content
-	script(src="/js/detail.js")
+	script(src="/j	")
+	style(type="text/css").
+		@media (min-width: 768px) {
+			.dl-horizontal dt{width: 130px;}
+			.dl-horizontal dd{margin-left: 150px;}
+		}
+		embed{width: 100%;}
+		#comments{padding: 10px;}
+		.panel.panel-default{margin-top: 20px;}
 	.container(style="margin-bottom: 50px;")
 		.row
 			.col-md-7
@@ -37,7 +45,7 @@ block content
 							if user
 								input(type="hidden", name="comment[from]", value="#{user._id}")
 							.form-group
-								textarea.form-control(name="comment[content]", row="3")
+								textarea.form-control(name="comment[content]", row="3", style="resize: none;")
 							if user
 								button.btn.btn-primary(type="submit") 提交
 							else 
