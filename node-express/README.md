@@ -27,11 +27,14 @@ $ bower info jquery 			查看jquery信息库
 $ bower home jquery 			浏览器打开jquery主页
  ```
 
- ## mongoDB命令行
- > show dbs  				查看所有数据库
- > use xxdb 				切换db
- > db 						查看当前db
- > show collections			查看当前db下的所有collection
+## mongoDB命令行
+
+```sh
+$ show dbs  				查看所有数据库
+$ use xxdb 				切换db
+$ db 						查看当前db
+$ show collections			查看当前db下的所有collection
+```
 
  ## underscore extend方法
 
