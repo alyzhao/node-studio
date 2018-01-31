@@ -14,6 +14,20 @@ const homePath = os.homedir();		// 返回用户的 home 目录
 }
 */
 
+
+process.stdin.setEncoding('utf-8');
+
+process.stdin.on('readable', () => {
+	const chunk = process.stdin.read();
+	if (chunk !== null) {
+		process.stdout.write(`data: ${chunk}`);
+	}
+})
+
+process.stdin.on('end', () => {
+	process.stdout.write('end');
+})
+
 let psPathPart = 'AppData/Local/Packages/Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy/LocalState/Assets';
 
 const psPath = path.resolve(homePath, psPathPart);
@@ -33,6 +47,9 @@ fs.readdir(psPath, (err, files) => {
 			let oldFilePath = path.resolve(psPath, item);
 			// let newFilePath = path.resolve(psPath, item + '.jpg');
 			// fs.renameSync(oldFilePath, newFilePath);
+
+			let basename = path.extname(oldFilePath);
+			console.log('extname', basename);
 
 			let stat = fs.statSync(oldFilePath);
 			let birthtime = new Date(stat.birthtime).getTime();
