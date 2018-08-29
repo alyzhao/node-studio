@@ -1,0 +1,36 @@
+{
+  "name": "zmanagement",
+  "version": "1.0.0",
+  "description": "use express and mongodb build backstage management",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alyzhao/node-studio.git"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "mongoose"
+  ],
+  "author": "Allen Zhao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alyzhao/node-studio/issues"
+  },
+  "homepage": "https://github.com/alyzhao/node-studio#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.2.10",
+    "serve-static": "^1.13.2"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.0",
+    "nodemon": "^1.18.3"
+  }
+}
