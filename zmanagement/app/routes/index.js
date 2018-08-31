@@ -1,5 +1,5 @@
 module.exports = function (app) {
   app.get('/', (req, res) => {
-    res.send('Hello Word!')
+    res.render('index')
   })
 }
