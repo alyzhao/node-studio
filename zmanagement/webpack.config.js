@@ -11,6 +11,7 @@ module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
     app: [path.resolve(__dirname, './frontend/main.js'), path.resolve(__dirname, './frontend/assets/scss/index.scss')],
+    // login: [path.resolve(__dirname, './frontend/main_login.js'), path.resolve(__dirname, './frontend/assets/scss/index.scss')]
   },
   output: {
     path: path.resolve(__dirname + '/dist'),
@@ -24,7 +25,8 @@ module.exports = {
       'assets': path.resolve(__dirname, './frontend/assets'),
       'components': path.resolve(__dirname, './frontend/components'),
       'constants': path.resolve(__dirname, './frontend/constants'),
-      'utils': path.resolve(__dirname, './frontend/utils')
+      'utils': path.resolve(__dirname, './frontend/utils'),
+      'containers': path.resolve(__dirname, './frontend/containers')
     }
   },
   module: {
@@ -83,10 +85,10 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  module.exports.output.publicPath = './'
+  module.exports.output.publicPath = '/'
   module.exports.output.path = path.resolve(__dirname + '/public')
-  // module.exports.devtool = 'source-map'
-  module.exports.devtool = 'cheap-source-map'
+  module.exports.devtool = 'source-map'
+  // module.exports.devtool = 'cheap-source-map'
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.HotModuleReplacementPlugin()
   ])

@@ -4,7 +4,7 @@
   "description": "use express and mongodb build backstage management",
   "main": "app.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon -w 'app/' -e js app.js"
+    "dev": "set NODE_ENV=development&&nodemon -w 'app/' -e js app.js"
   },
   "repository": {
     "type": "git",
@@ -23,11 +23,12 @@
   "homepage": "https://github.com/alyzhao/node-studio#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "element-ui": "^2.4.6",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "mongoose": "^5.2.10",
+    "mongoose": "^5.2.12",
     "normalize.css": "^8.0.0",
     "serve-static": "^1.13.2",
     "vue": "^2.5.17",
@@ -37,7 +38,6 @@
     "@babel/core": "^7.0.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.0",
-    "babel-plugin-component": "^1.1.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",

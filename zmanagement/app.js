@@ -6,9 +6,35 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const serveStatic = require('serve-static')  // 这些是中间件
 const app = express()
+const mongoose = require('mongoose');
+const mongoStore = require('connect-mongo')(session); // 引入connect-mongo中间件存储session到mongodb, 中间件已经分离所以参数为session
 
 app.set('views', path.join(__dirname, './app/views'))
 app.set('view engine', 'ejs')
+
+// 存储session
+
+const dbUrl = 'mongodb://localhost/jewelry';
+// mongodb
+mongoose.connect(dbUrl, { useNewUrlParser: true }, (err, res) => {
+  if (!err) {
+    console.log('connect mongodb success!')
+  } else {
+    console.log('connect mongodb failed!')
+  }
+});
+mongoose.Promise = global.Promise;  
+app.use(cookieParser());
+app.use(session({
+  secret: 'node-express',
+  store: new mongoStore({
+    url: dbUrl,
+    collection: 'sessions'  // 存储到mongodb的collection名
+  }),
+  resave: true,
+  saveUninitialized: true
+}));
+
 
 // webpack相关
 const webpack = require('webpack')
@@ -39,15 +65,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }))
-app.use(cookieParser())
 // app.use(session)
 
-// app.use(express.static(path.join(__dirname, 'frontend', 'public')))
+app.use(serveStatic(path.join(__dirname, 'public')))     // 加载静态目录时在这儿查找
 
 require('./app/routes')(app)
 
 const port = process.env.PORT || 3000  // 获取全局变量PORT的值, 在命令行下 PORT = 5200 node app.js, 即可赋值
 
-app.use(serveStatic(path.join(__dirname, 'public')))     // 加载静态目录时在这儿查找
 
 app.listen(port);
+
+console.log('app started on port ' + port)
