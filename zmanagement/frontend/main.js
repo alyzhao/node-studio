@@ -7,7 +7,7 @@ import 'normalize.css'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
   
-Vue.use(ElementUI)
+Vue.use(ElementUI, { size: 'small' })
 
 if (document.getElementsByTagName('meta')['user-identification'].getAttribute('content') === 'management') {
   new Vue({

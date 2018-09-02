@@ -14,7 +14,11 @@ const routes = [{
   path: '/products',
   component: Products,
   children: [{
-    path: ':id',
+    path: 'edit/:id',
+    component: EditProducts,
+    props: true
+  }, {
+    path: 'add',
     component: EditProducts,
     props: true
   }]

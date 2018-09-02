@@ -87,8 +87,8 @@ module.exports = {
 if (process.env.NODE_ENV === 'development') {
   module.exports.output.publicPath = '/'
   module.exports.output.path = path.resolve(__dirname + '/public')
-  module.exports.devtool = 'source-map'
-  // module.exports.devtool = 'cheap-source-map'
+  // module.exports.devtool = 'source-map'
+  module.exports.devtool = 'cheap-source-map'
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.HotModuleReplacementPlugin()
   ])
