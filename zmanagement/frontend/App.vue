@@ -38,7 +38,11 @@
     },
     created () {
       console.log(this.$router.currentRoute)
-      this.activeIndex = this.$router.currentRoute.name
+      if (this.$router.currentRoute.fullPath.match(/\/products/)) {
+        this.activeIndex = 'products'
+      } else {
+        this.activeIndex = 'shops'
+      }
     }
   }
 </script>

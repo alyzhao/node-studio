@@ -1,21 +1,26 @@
 <template>
   <div class="products">
     <router-view></router-view>
-    <el-table :data="products" style="width: 100%" class="product-table">
-      <el-table-column prop="productName" label="商品名称">
-      </el-table-column>
-      <el-table-column label="商品图">
-        <template slot-scope="scope">
-          <img class="product-img" :src="scope.row.productImg">
-        </template>
-      </el-table-column>
-      <el-table-column label="商品名称">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="editProduct(scope.row.id)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="deleteProduct(scope.row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="product-table-wrap">
+      <el-row class="">
+        
+      </el-row>
+      <el-table :data="products" style="width: 100%" class="product-table">
+        <el-table-column prop="productName" label="商品名称">
+        </el-table-column>
+        <el-table-column label="商品图">
+          <template slot-scope="scope">
+            <img class="product-img" :src="scope.row.productImg">
+          </template>
+        </el-table-column>
+        <el-table-column label="商品名称">
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click="editProduct(scope.row.id)">编辑</el-button>
+            <el-button size="mini" type="danger" @click="deleteProduct(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 <script>
@@ -50,7 +55,7 @@
 </script>
 <style lang="scss">
   .products {
-    .edit-products + .product-table {
+    .edit-products + .product-table-wrap {
       display: none;
     }
     .product-img {

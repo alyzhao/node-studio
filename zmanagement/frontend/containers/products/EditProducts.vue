@@ -8,7 +8,7 @@
         <UploadImg :imgSrc="productInfo.productImg" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('productInfo')">立即创建</el-button>
+        <el-button type="primary" @click="submitForm('productInfo')">{{submitText}}</el-button>
         <el-button @click="cancel">取消</el-button>
       </el-form-item>   
     </el-form>
@@ -49,6 +49,14 @@
       },
       cancel () {
         this.$router.push('/products')
+      },
+    },
+    computed: {
+      idEdit () {
+        return this.$router.currentRoute.name === 'editProducts'
+      },
+      submitText () {
+        return this.idEdit ? '提交修改' : '立即创建'
       }
     },
     components: {
