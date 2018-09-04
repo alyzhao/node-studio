@@ -8,7 +8,9 @@
           <!-- <el-button type="danger" icon="el-icon-delete">删除</el-button>           -->
         </el-button-group>
       </el-row>
-      <el-table :data="products" style="width: 100%" class="product-table">
+      <el-table :data="products" style="width: 100%" class="product-table center-tb">
+        <el-table-column type="selection" width="55">
+        </el-table-column>
         <el-table-column prop="productName" label="商品名称">
         </el-table-column>
         <el-table-column label="商品图">
@@ -16,7 +18,7 @@
             <img class="product-img" :src="scope.row.productImg">
           </template>
         </el-table-column>
-        <el-table-column label="商品名称">
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="editProduct(scope.row.id)">编辑</el-button>
             <el-button size="mini" type="danger" @click="deleteProduct(scope.row.id)">删除</el-button>
@@ -68,6 +70,8 @@
       max-width: 150px;
       max-height: 150px;
     }
+  }
+  .center-tb {
     table {
       tr {
         th, td {
