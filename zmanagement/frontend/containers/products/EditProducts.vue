@@ -7,6 +7,7 @@
       <el-form-item label="商品图片" prop="productImg">
         <UploadImg :imgSrc="productInfo.productImg" />
       </el-form-item>
+      
       <el-form-item>
         <el-button type="primary" @click="submitForm('productInfo')">{{submitText}}</el-button>
         <el-button @click="cancel">取消</el-button>

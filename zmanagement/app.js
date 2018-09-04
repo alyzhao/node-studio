@@ -26,7 +26,7 @@ mongoose.connect(dbUrl, { useNewUrlParser: true }, (err, res) => {
 mongoose.Promise = global.Promise;  
 app.use(cookieParser());
 app.use(session({
-  secret: 'node-express',
+  secret: 'zmanagement',
   store: new mongoStore({
     url: dbUrl,
     collection: 'sessions'  // 存储到mongodb的collection名
@@ -61,10 +61,10 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }))
+app.use(bodyParser.json());
 // app.use(session)
 
 app.use(serveStatic(path.join(__dirname, 'public')))     // 加载静态目录时在这儿查找

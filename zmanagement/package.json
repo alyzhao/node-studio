@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/alyzhao/node-studio#readme",
   "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
@@ -30,9 +32,11 @@
     "express-session": "^1.15.6",
     "mongoose": "^5.2.12",
     "normalize.css": "^8.0.0",
+    "qs": "^6.5.2",
     "serve-static": "^1.13.2",
     "vue": "^2.5.17",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

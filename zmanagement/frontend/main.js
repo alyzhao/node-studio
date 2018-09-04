@@ -6,8 +6,12 @@ import "babel-polyfill"
 import 'normalize.css'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import axios from 'axios'
   
 Vue.use(ElementUI, { size: 'small' })
+
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+Vue.prototype.axios = axios
 
 if (document.getElementsByTagName('meta')['user-identification'].getAttribute('content') === 'management') {
   new Vue({
