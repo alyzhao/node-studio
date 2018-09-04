@@ -1,15 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Products from 'containers/products/Index.vue'
+import Products from 'containers/products/Index'
 import EditProducts from 'containers/products/EditProducts'
-import Shops from 'containers/shops/Index.vue'
+import Shops from 'containers/shops/Index'
 import EditShops from 'containers/shops/EditShops'
+import Merchant from 'containers/merchant/Index' 
 
 Vue.use(Router)
 
 const routes = [{
   path: '/',
-  redirect: '/products'
+  redirect: '/index'
+}, {
+  path: '/index',
+  component: Merchant
 }, {
   name: 'products',
   path: '/products',

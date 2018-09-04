@@ -28,6 +28,7 @@
 </template>
 <script>
   import { userMenu } from 'constants'
+  import { mapActions } from 'vuex'
 
   export default {
     data () {
@@ -37,12 +38,44 @@
       }
     },
     created () {
-      console.log(this.$router.currentRoute)
+      this.axios.interceptors.response.use(response => {
+        console.log(response)
+        return response
+      }, err => {
+        if (err.response.status === 401) {
+          this.$alert('长时间未操作, 请登录!', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning',
+            callback: action => {
+              window.location.href = '/login'
+            }
+          })
+        } else if (err.response.status === 403) {
+          this.$alert('操作无权限!', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning',
+            callback: action => {
+              window.location.href = '/'
+            }          
+          })
+        }
+        return Promise.reject(err) 
+      })
+
+      this.$store.dispatch('getUserInfo', this).then(res => {
+        console.log('mapActions', res)
+      }).catch(err => {
+        console.log('mapActions', err)
+      })
+
       if (this.$router.currentRoute.fullPath.match(/\/products/)) {
         this.activeIndex = 'products'
       } else {
         this.activeIndex = 'shops'
       }
+    },
+    methods: {
+
     }
   }
 </script>

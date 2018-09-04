@@ -30,9 +30,6 @@
   </div>
 </template>
 <script>
-  import qs from 'qs'
-  console.log(qs)
-
   export default {
     props: ['id'],
     data () {

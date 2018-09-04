@@ -52,6 +52,12 @@ exports.signin = function (req, res) {
         console.log('password is pass!');
         req.session.email = result.email;  // 设置session
         req.session.role = result.role
+        req.session.user = {
+          email: result.email,
+          role: result.role,
+          shopName: result.shopName,
+          shopPhone: result.shopPhone
+        }
         req.session.expiretime = 1
         // res.redirect('/')
         res.status(200).json({message: 'success', user: {email: result.email, role: result.role}})
@@ -60,5 +66,12 @@ exports.signin = function (req, res) {
       }
     })
 
+  })
+}
+
+exports.getUserInfo = function (req, res) {
+  return res.status(200).json({
+    role: req.session.role,
+    email: req.session.email
   })
 }

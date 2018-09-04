@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 const state = {
   user: null
 }
@@ -11,9 +9,24 @@ const mutations = {
 }
 
 const actions = {
-  getUserInfo ({commit}) {
+  getUserInfo ({commit}, vue) {
     return new Promise((reslove, reject) => {
-      axios.post()
+      vue.axios.post('/user/').then(res => {
+        let user = {
+          email: res.data.email,
+          role: res.data.role
+        }
+        commit('SET_USER_INFO', user)
+        reslove(user)
+      }).catch(err => {
+        reject(err)
+      })
     })
   }
+}
+
+export default {
+  state,
+  mutations,
+  actions
 }

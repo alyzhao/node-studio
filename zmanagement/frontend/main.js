@@ -7,6 +7,7 @@ import 'normalize.css'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
+import store from './store'
   
 Vue.use(ElementUI, { size: 'small' })
 
@@ -18,6 +19,7 @@ if (document.getElementsByTagName('meta')['user-identification'].getAttribute('c
     el: '#app',
     template: '<App/>',
     router,
+    store,
     components: { App }
   })  
 } else {
