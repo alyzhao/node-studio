@@ -5,7 +5,7 @@
       <el-row class="operate-container">
         <el-button-group>
           <el-button type="warning" icon="el-icon-circle-plus-outline" @click="addShop">添加</el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="deleteBatchShop">删除</el-button>          
+          <el-button type="danger" icon="el-icon-delete" @click="deleteBatchShop" :disabled="multipleSelection.length <= 0">删除</el-button>          
         </el-button-group>
       </el-row>
 

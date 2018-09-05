@@ -33,8 +33,9 @@
       }
     },
     created () {
-      console.log(this.id)
-      console.log(this.$router.currentRoute.name)
+      if (this.idEdit) {
+        this.loadData()
+      }
     },
     methods: {
       submitForm (formName) {
@@ -45,14 +46,17 @@
 
           if (this.idEdit) {
             // 编辑
+
           } else {
             // 添加
             let form = new FormData()
             form.append('uploadImg', this.productInfo.productImg)
             form.append('productName', this.productInfo.productName)
             this.axios.post('/pro/add', form).then(res => {
-              console.log(this.productInfo)
-              console.log(res)
+              this.successHandle(res, '添加成功!', () => {
+                this.$emit('load-data')
+                this.$router.push('/products')
+              })
             }).catch(this.errorHandle)
 
           }
@@ -64,6 +68,17 @@
       fileChange (file) {
         this.productInfo.productImg = file
         console.log(this.productInfo.productImg)
+      },
+      loadData () {
+        this.axios.post('/pro/detail', {_id: this.id}).then(res => {
+          let data = res.data
+          if (data.message === 'success') {
+            this.productInfo.productName = data.productInfo.productName
+            this.productInfo.productImg = data.productInfo.productImg
+          } else {
+            this.$message.error(data.message)
+          }
+        }).catch(this.errorHandle)
       }
     },
     computed: {

@@ -1,5 +1,5 @@
 const successHandle = function (res, smessage, cb, errCb) {
-  if (res.message === 'success') {
+  if (res.data.message === 'success') {
     this.$message.success(smessage)
     cb && cb();
   } else {

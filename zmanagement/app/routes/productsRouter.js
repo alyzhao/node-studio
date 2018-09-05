@@ -16,7 +16,8 @@ let storage = multer.diskStorage({
   filename: function(req, file, cb) {
     console.log('filename: ');
     console.log(file);
-    let type = file.originalname.split('.')[1];
+    let type = file.originalname.split('.').reverse()[0];
+    console.log(type)
     cb(null, 'products' + Date.now() + '.' + type);
   }
 }) 
@@ -24,5 +25,13 @@ let upload = multer({ storage: storage });
 
 
 productsRouter.post('/add', SessionManage.checkSessionForUser, upload.single('uploadImg'), products.saveProductImg, products.add)
+
+productsRouter.get('/list', products.list)
+
+productsRouter.delete('/delete', products.delete)
+
+productsRouter.delete('/batchDelete', products.batchDelete)
+
+productsRouter.post('/detail', products.detail)
 
 module.exports = productsRouter

@@ -4,7 +4,7 @@ var ObjectId = Schema.Types.ObjectId;
 
 
 let ProductsSchema = new mongoose.Schema({
-  productsName: String,
+  productName: String,
   productImg: String,
   shopId: {
     type: ObjectId,
