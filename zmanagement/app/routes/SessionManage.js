@@ -7,8 +7,8 @@
  */
 exports.checkSessionForPageRequest = function(req, res, next) {
     console.log('checkSessionForPageRequest')
-    if (!req.session.email) {
-        return res.redirect('/');
+    if (!req.session.user) {
+        return res.redirect('/login');
     }
 
     next();
@@ -22,7 +22,7 @@ exports.checkSessionForPageRequest = function(req, res, next) {
  * @returns {*}
  */
 exports.checkSessionForDataRequest = function(req, res, next) {
-    if (!req.session.email) {
+    if (!req.session.user) {
         return res.status(401).send('session is timeout');
     }
 
@@ -33,7 +33,7 @@ exports.checkSessionForDataRequest = function(req, res, next) {
  * 判断是否为super admin
  */
 exports.checkSessionForAdmin = function(req, res, next) {
-    if (req.session.role <= 50) {
+    if (req.session.user.role <= 50) {
         return res.status(403).send('no authority!');
     }
 
@@ -44,7 +44,7 @@ exports.checkSessionForAdmin = function(req, res, next) {
  * 判断是否为 user
  */
 exports.checkSessionForUser = function(req, res, next) {
-  if(req.session.role > 10) {
+  if(req.session.user.role > 10) {
     return res.status(403).send('no authority!');
   }
 

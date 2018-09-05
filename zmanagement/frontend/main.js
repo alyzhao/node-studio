@@ -8,7 +8,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
 import store from './store'
+import mixin from './mixin'
   
+Vue.mixin(mixin)
+
 Vue.use(ElementUI, { size: 'small' })
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'

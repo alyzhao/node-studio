@@ -7,9 +7,7 @@
 <script>
   export default {
     props: {
-      imgSrc: {
-        type: String
-      },
+      imgSrc: {},
       width: {
         type: String,
         default: '100px'
@@ -21,9 +19,12 @@
     },
     data () {
       return {
-        bgImg: this.imgSrc,
+        bgImg: null,
         file: null
       }
+    },
+    created () {
+      this.bgImg = this.imgSrc
     },
     mounted () {
       console.log(this.uploadImgBg)
@@ -35,6 +36,7 @@
       uploadChange (e) {
         console.log(e)
         this.file = e.target.files[0]
+        this.$emit('file-change', this.file)
         console.log(this.file instanceof File)
         let reader = new FileReader()
         reader.onload = (rd) => {

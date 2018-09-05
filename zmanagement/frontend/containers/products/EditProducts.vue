@@ -5,7 +5,7 @@
         <el-input style="max-width: 500px" v-model="productInfo.productName" clearable></el-input>
       </el-form-item>
       <el-form-item label="商品图片" prop="productImg">
-        <UploadImg :imgSrc="productInfo.productImg" />
+        <UploadImg :imgSrc="productInfo.productImg" @file-change="fileChange" />
       </el-form-item>
       
       <el-form-item>
@@ -24,7 +24,7 @@
       return {
         productInfo: {
           productName: '',
-          productImg: 'http://img.zcool.cn/community/01858e591fe6a6b5b3086ed473c1d0.jpg'
+          productImg: ''
         },
         productsRules: {
           productName: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
@@ -39,18 +39,32 @@
     methods: {
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
-          console.log(this.productInfo.productName)
-          if (valid) {
-            alert('submit!');
+          if (!valid) {
+            return
+          }
+
+          if (this.idEdit) {
+            // 编辑
           } else {
-            console.log('error submit!!');
-            return false;
+            // 添加
+            let form = new FormData()
+            form.append('uploadImg', this.productInfo.productImg)
+            form.append('productName', this.productInfo.productName)
+            this.axios.post('/pro/add', form).then(res => {
+              console.log(this.productInfo)
+              console.log(res)
+            }).catch(this.errorHandle)
+
           }
         })
       },
       cancel () {
         this.$router.push('/products')
       },
+      fileChange (file) {
+        this.productInfo.productImg = file
+        console.log(this.productInfo.productImg)
+      }
     },
     computed: {
       idEdit () {

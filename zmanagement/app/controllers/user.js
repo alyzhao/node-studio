@@ -1,5 +1,6 @@
 const User = require('../models/user.js')
 const errorHandle = require('../utils').errorHandle
+const _ = require('lodash')
 
 // 注册
 exports.signup = function (req, res) {
@@ -21,6 +22,8 @@ exports.signup = function (req, res) {
         shopPhone: params.shopPhone,
         password: params.password
       })
+      console.log('-----signup-----')
+      console.log(userDoc)
       userDoc.save((err, result) => {
         console.log(err)
         if (err) {
@@ -50,11 +53,11 @@ exports.signin = function (req, res) {
       }
       if (isMatch) {
         console.log('password is pass!');
-        req.session.email = result.email;  // 设置session
-        req.session.role = result.role
         req.session.user = {
+          _id: result._id,
           email: result.email,
           role: result.role,
+          shopOwner: result.shopOwner,
           shopName: result.shopName,
           shopPhone: result.shopPhone
         }
@@ -71,7 +74,125 @@ exports.signin = function (req, res) {
 
 exports.getUserInfo = function (req, res) {
   return res.status(200).json({
-    role: req.session.role,
-    email: req.session.email
+    user: req.session.user
+  })
+}
+
+exports.update = function (req, res) {
+  let _id = req.session.user._id
+  User.findOne({email: req.body.user.email, _id: {$ne: _id}}, (err, result) => {
+    if (result) {
+      return res.status(200).json({message: '邮箱已存在!'})
+    }
+    User.findById(_id, (err, user) => {
+      if (err) {
+        return errorHandle(res, '修改失败, 请重试!', err)
+      }
+      if (!user) {
+        return res.status(401).send('用户不存在!')
+      }
+      let _user = _.assignIn(user, req.body.user)
+      console.log('-----before update-----')
+      console.log(_user)
+      _user.save((err, result) => {
+        if (err) {
+          return errorHandle(res, '修改失败, 请重试!', err)
+        }
+        console.log('-----update------')
+        console.log(result)
+        req.session.user = {
+          _id: result._id,
+          email: result.email,
+          role: result.role,
+          shopOwner: result.shopOwner,
+          shopName: result.shopName,
+          shopPhone: result.shopPhone
+        }
+        res.status(200).json({message: 'success'})
+      })
+    })    
+  })
+}
+
+exports.signout = function (req, res) {
+  if (req.session.user) {
+    delete req.session.user
+  }
+
+  req.session.destroy()
+  res.status(200).json({message: 'success'})
+}
+
+exports.delete = function (req, res) {
+  let _id = req.body._id
+  console.log('delete user _id: ' + _id)
+  User.remove({_id: _id}, (err, result) => {
+    let message = 'success'
+    if (err) {
+      message = '删除失败, 请重试!'
+    }
+    res.status(200).json({message})
+  })
+}
+
+exports.list = function (req, res) {
+  User.fetchUser(function(err, users) {
+    if (err) {
+      return errorHandle(res, '获取商家列表失败, 请重试!', err)
+    }
+    res.status(200).json(users)
+  })
+}
+
+exports.getShopInfo = function (req, res) {
+  User.findById(req.body._id, function (err, shopInfo) {
+    if (!shopInfo) {
+      return res.status(200).json({message: '该商户不存在!'})
+    } else {
+      console.log('-----shopInfo-----')
+      res.status(200).json({
+        message: 'success',
+        shopInfo: shopInfo
+      })
+    }
+  })
+}
+
+exports.updateShopInfo = function (req, res) {
+  let _id = req.body.shopInfo._id
+  User.findOne({email: req.body.shopInfo.email, _id: {$ne: _id}}, (err, result) => {
+    if (result) {
+      return res.status(200).json({message: '邮箱已存在!'})
+    }
+    User.findById(_id, (err, shopInfo) => {
+      if (err) {
+        return errorHandle(res, '修改失败, 请重试!', err)
+      }
+      if (!shopInfo) {
+        return res.status(401).send('用户不存在!')
+      }
+      let _shopInfo = _.assignIn(shopInfo, req.body.shopInfo)
+      console.log('-----before update-----')
+      console.log(_shopInfo)
+      _shopInfo.save((err, result) => {
+        if (err) {
+          return errorHandle(res, '修改失败, 请重试!', err)
+        }
+        res.status(200).json({message: 'success'})
+      })
+    })    
+  })
+}
+
+exports.batchDelete = function (req, res) {
+  let _ids = req.body._ids
+  User.remove({_id: { $in: _ids }}, (err, result) => {
+    console.log('------batchDelete-----')
+    console.log(result)
+    let message = 'success'
+    if (err) {
+      message = '删除失败, 请重试!'
+    }
+    res.status(200).json({message})
   })
 }

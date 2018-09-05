@@ -71,7 +71,13 @@ UserSchema.statics = {
   fetch: function(cb) {
     return this
       .find({})
-      .sort('meta.updateAt')
+      .sort('meta.createAt')
+      .exec(cb)
+  },
+  fetchUser: function (cb) {
+    return this
+      .find({role: {$lt: 10}})
+      .sort('meta.createAt')
       .exec(cb)
   },
   findById: function(id, cb) {

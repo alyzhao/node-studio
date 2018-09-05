@@ -13,8 +13,8 @@
         <el-input style="max-width: 500px" v-model="shopInfo.shopName" clearable></el-input>
       </el-form-item>
 
-      <el-form-item label="商家法人" prop="shopOwer">
-        <el-input style="max-width: 500px" v-model="shopInfo.shopOwer" clearable></el-input>
+      <el-form-item label="商家法人" prop="shopOwner">
+        <el-input style="max-width: 500px" v-model="shopInfo.shopOwner" clearable></el-input>
       </el-form-item>
 
       <el-form-item label="商家联系方式" prop="shopPhone">
@@ -35,19 +35,24 @@
     data () {
       return {
         shopInfo: {
-          email: '163@163.com',
-          shopName: '测试商家一',
-          shopOwer: '测试商家',
-          shopPhone: '123412351',
-          password: '123456'
+          email: '',
+          shopName: '',
+          shopOwner: '',
+          shopPhone: '',
+          _id: ''
         },
         shopRules: {
           email: [{ required: true , message: '商家邮箱不能为空', trigger: 'blur'}],
           password: [{ required: true , message: '商家密码不能为空', trigger: 'blur'}],
           shopName: [{ required: true, message: '商家名称不能为空', trigger: 'blur' }],
-          shopOwer: [{ required: true, message: '商家法人不能为空', trigger: 'blur' }],
+          shopOwner: [{ required: true, message: '商家法人不能为空', trigger: 'blur' }],
           shopPhone: [{ required: true, message: '商家联系方式不能为空', trigger: 'blur' }]
         }
+      }
+    },
+    created () {
+      if (this.isEdit && this.id) {
+        this.loadData()
       }
     },
     methods: {
@@ -57,11 +62,26 @@
             return
           }
           console.log('success')
-          if (this.$router.currentRoute.name === 'addShop') {
+          // 如果是添加操作
+          if (!this.isEdit) {
+            console.log('addShop', this.shopInfo)
             this.axios.post('/user/signup', {shopInfo: this.shopInfo}).then(res => {
               let data = res.data
-              if (data.message === 'message') {
+              if (data.message === 'success') {
                 this.$message.success('添加成功!')
+              } else {
+                this.$message.error(data.message)
+              }
+            }).catch(err => {
+              console.info(err.response)
+              this.$message.error(err.response.data.message)
+            })
+          } else {
+            // 修改操作
+            this.axios.post('/user/updateShopInfo', {shopInfo: this.shopInfo}).then(res => {
+              let data = res.data
+              if (data.message === 'success') {
+                this.$message.success('修改成功!')
               } else {
                 this.$message.error(data.message)
               }
@@ -74,6 +94,16 @@
       },
       cancel () {
         this.$router.push('/shops')
+      },
+      loadData () {
+        this.axios.post('/user/getShopInfo', {_id: this.id}).then(res => {
+          this.initShopInfo(res.data.shopInfo)
+        })
+      },
+      initShopInfo (shopInfo) {
+        Object.keys(this.shopInfo).forEach(key => {
+          this.shopInfo[key] = shopInfo[key]
+        })
       }
     },
     computed: {

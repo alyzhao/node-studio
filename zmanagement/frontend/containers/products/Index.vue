@@ -57,6 +57,11 @@
       },
       addProducts () {
         this.$router.push(`/products/add`)
+      },
+      loadData () {
+        this.axios('/products/list').then(res => {
+          
+        })
       }
     }
   }

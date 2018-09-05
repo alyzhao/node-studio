@@ -5,6 +5,7 @@ import EditProducts from 'containers/products/EditProducts'
 import Shops from 'containers/shops/Index'
 import EditShops from 'containers/shops/EditShops'
 import Merchant from 'containers/merchant/Index' 
+import EditUserInfo from 'containers/merchant/EditUserInfo'
 
 Vue.use(Router)
 
@@ -13,7 +14,11 @@ const routes = [{
   redirect: '/index'
 }, {
   path: '/index',
-  component: Merchant
+  component: Merchant,
+  children: [{
+    path: 'edit',
+    component: EditUserInfo
+  }]
 }, {
   name: 'products',
   path: '/products',

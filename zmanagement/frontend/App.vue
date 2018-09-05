@@ -13,7 +13,7 @@
         <el-dropdown>
           <i class="el-icon-setting" style="margin-right: 15px"></i>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item @click.native="signout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <span>用户名称</span>
@@ -27,14 +27,14 @@
   </el-container>
 </template>
 <script>
-  import { userMenu } from 'constants'
+  import { adminMenu, userMenu } from 'constants'
   import { mapActions } from 'vuex'
 
   export default {
     data () {
       return {
-        menu: userMenu,
-        activeIndex: userMenu[0].route
+        menu: [],
+        activeIndex: null
       }
     },
     created () {
@@ -62,20 +62,40 @@
         return Promise.reject(err) 
       })
 
-      this.$store.dispatch('getUserInfo', this).then(res => {
-        console.log('mapActions', res)
+      this.$store.dispatch('getUserInfo', this).then(user => {
+        if (user.role > 50) {
+          this.menu = adminMenu
+        } else {
+          this.menu = userMenu
+        }
       }).catch(err => {
-        console.log('mapActions', err)
+        console.info(err)
+        console.info(err.response)
       })
 
-      if (this.$router.currentRoute.fullPath.match(/\/products/)) {
+      let fullPath = this.$router.currentRoute.fullPath
+      if (fullPath.match(/\/products/)) {
         this.activeIndex = 'products'
-      } else {
+      } else if (fullPath.match(/\/index/)) {
+        this.activeIndex = 'index'
+      } else if (fullPath.match(/\/shops/)) {
         this.activeIndex = 'shops'
       }
     },
     methods: {
-
+      signout () {
+        this.axios.post('/user/signout').then(res => {
+          let data = res.data
+          if (data.message === 'success') {
+            this.$message.success('退出成功!')
+            window.location.href = '/login'
+          } else {
+            this.$message.error(data.message)
+          }
+        }).catch(err => {
+          this.$message.error(err.response.data.message)
+        })
+      }
     }
   }
 </script>

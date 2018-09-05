@@ -16,7 +16,7 @@
         <el-table-column prop="shopName" label="商家名称">
         </el-table-column>
 
-        <el-table-column label="商家法人" prop="shopOwer">
+        <el-table-column label="商家法人" prop="shopOwner">
         </el-table-column>
 
         <el-table-column label="联系方式" prop="shopPhone">
@@ -24,8 +24,8 @@
 
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="editShop(scope.row.id)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="deleteShop(scope.row.id)">删除</el-button>
+            <el-button type="primary" size="mini" @click="editShop(scope.row._id)">编辑</el-button>
+            <el-button size="mini" type="danger" @click="deleteShop(scope.row._id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -36,23 +36,18 @@
   export default {
     data () {
       return {
-        shops: [{
-          id: 1,
-          shopName: '测试商家一',
-          shopOwer: '测试商家',
-          shopPhone: '123412351'
-        }, {
-          id: 2,
-          shopName: '测试商家一',
-          shopOwer: '测试商家',
-          shopPhone: '123412351'
-        }, {
-          id: 3,
-          shopName: '测试商家一',
-          shopOwer: '测试商家',
-          shopPhone: '123412351'
-        }],
+        shops: [],
         multipleSelection: []
+      }
+    },
+    created () {
+      let role = this.$store.state.Account.user.role
+      if (role) {
+        this.checkPermission(role)
+      } else {
+        this.$store.dispatch('getUserInfo', this).then(user => {
+          this.checkPermission(user.role)
+        })
       }
     },
     methods: {
@@ -60,16 +55,59 @@
         this.$router.push(`/shops/add`)
       },
       editShop (id) {
+        console.log(id)
         this.$router.push(`/shops/edit/${id}`)
       },
-      deleteShop () {
-
+      deleteShop (_id) {
+        this.$confirm('确定删除该商家吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.axios.delete('/user/delete', {data: {_id: _id}}).then(res => {
+            if (res.data.message === 'success') {
+              this.$message.success('删除成功!')
+            } else {
+              this.$message.error(res.data.message)
+            }
+          }).catch(err => {
+            this.$message.error(err.response.data.message)
+          })
+        })
       },
       deleteBatchShop () {
-
+        this.$confirm('确定删除这些商家吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let _ids = this.multipleSelection.map(item => item._id)
+          this.axios.delete('/user/batchDelete', {
+            data: {_ids}
+          }).then(res => {
+            if (res.data.message === 'success') {
+              this.$message.success('删除成功!')
+            } else {
+              this.$message.error(res.data.message)
+            }
+          }).catch(err => {
+            this.$message.error(err.response.data.message)
+          })
+        })
       },
       handleSelectionChange (val) {
         this.multipleSelection = val
+      },
+      checkPermission (role) {
+        if (role < 50) {
+          window.location.href = '/'
+        } else {
+          this.axios.get('/user/list').then(res => {
+            let data = res.data
+            console.log(data)
+            this.shops = data
+          })
+        }
       }
     }
   }

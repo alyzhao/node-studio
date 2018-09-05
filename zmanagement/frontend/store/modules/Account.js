@@ -1,5 +1,5 @@
 const state = {
-  user: null
+  user: {}
 }
 
 const mutations = {
@@ -12,13 +12,12 @@ const actions = {
   getUserInfo ({commit}, vue) {
     return new Promise((reslove, reject) => {
       vue.axios.post('/user/').then(res => {
-        let user = {
-          email: res.data.email,
-          role: res.data.role
-        }
+        let user = res.data.user
         commit('SET_USER_INFO', user)
+        console.log('reslove')
         reslove(user)
       }).catch(err => {
+        console.log('reject')
         reject(err)
       })
     })

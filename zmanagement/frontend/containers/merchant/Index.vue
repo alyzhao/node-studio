@@ -1,24 +1,79 @@
 <template>
   <div class="user-info">
-    <el-row :gutter="30">
-      <el-col class="title">
-        邮箱
-      </el-col>
-      <el-col class="info">
-        {{user.email}}
-      </el-col>
-    </el-row>
+    <router-view></router-view>
+    <div class="user-info-wrap">
+      <el-row :gutter="30">
+        <el-col class="title" :span="4">
+          邮箱
+        </el-col>
+        <el-col class="info" :span="20">
+          {{user.email}}
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col class="title" :span="4">
+          用户名称
+        </el-col>
+        <el-col class="info" :span="20">
+          {{user.shopName}}
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col class="title" :span="4">
+          联系人
+        </el-col>
+        <el-col class="info" :span="20">
+          {{user.shopOwner}}
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col class="title" :span="4">
+          联系电话
+        </el-col>
+        <el-col class="info" :span="20">
+          {{user.shopPhone}}
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col class="info" :span="20" :push="4">
+          <el-button type="primary" @click="editUserInfo">编辑</el-button>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 <script>
   export default {
     computed: {
       user () {
-        return this.$store.state.user
+        return this.$store.state.Account.user
+      }
+    },
+    methods: {
+      editUserInfo () {
+        this.$router.push(`/index/edit`)
       }
     }
   }
 </script>
 <style lang="scss">
-  
+  .user-info {
+    .edit-userinfo + .user-info-wrap {
+      display: none;
+    }
+    .el-row {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .title {
+      text-align: right;
+    }
+    .info {
+      color: #606266
+    }
+  }
 </style>
