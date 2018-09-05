@@ -16,7 +16,7 @@
             <el-dropdown-item @click.native="signout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span>用户名称</span>
+        <span>{{userInfo.shopName}}</span>
       </el-header>
       <el-main style="background-color: #F2F6FC;">
         <div style="box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 3px 1px;background-color: #fff">
@@ -95,6 +95,11 @@
         }).catch(err => {
           this.$message.error(err.response.data.message)
         })
+      }
+    },
+    computed: {
+      userInfo () {
+        return this.$store.state.Account.user
       }
     }
   }

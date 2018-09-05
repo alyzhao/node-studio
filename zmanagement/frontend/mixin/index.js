@@ -9,7 +9,7 @@ const successHandle = function (res, smessage, cb, errCb) {
 }
 
 const errorHandle = function (err) {
-  this.$message.error(err.response.data.message)
+  this.$message.error(err.response.data.message || err.response)
 }
 
 export default {

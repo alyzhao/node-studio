@@ -1,12 +1,12 @@
 const Products = require('../models/products.js')
 const errorHandle = require('../utils').errorHandle
+const _ = require('lodash')
 
 exports.saveProductImg = function (req, res, next) {
   let file = req.file;
-  console.log(req.body)
-  console.log(req.body.uploadImg)
-  let filename = file.filename;
-  if (filename) {
+  console.log(file)
+  if (file) {
+    let filename = file.filename;
     req.productImg = '/upload/' + filename;
   }
   next()
@@ -37,15 +37,11 @@ exports.add = function (req, res) {
 }
 
 exports.list = function (req, res) {
-  console.log('-----products list------')
-  console.log(req.session.user.role)
   if (req.session.user.role > 50) {
     Products.fetch((err, result) => {
       if (err) {
         return errorHandle(res, '获取商品列表失败, 请重试!', err)
       }
-      console.log('-----products list------')
-      console.log(result)
       res.status(200).json({message: 'success', list: result})
     })
   } else {
@@ -53,8 +49,6 @@ exports.list = function (req, res) {
       if (err) {
         return errorHandle(res, '获取商品列表失败, 请重试!', err)
       }
-      console.log('-----products list------')
-      console.log(result)
       res.status(200).json({message: 'success', list: result})
     })
   }
@@ -107,5 +101,36 @@ exports.detail = function (req, res) {
         productInfo: productInfo
       })
     }
+  })
+}
+
+exports.update = function (req, res) {
+  let select = {
+    _id: req.body._id
+  }
+  if (req.session.role < 10) {
+    select.shopId = req.session.user._id
+  }
+  Products.findOne(select, (err, result) => {
+    if (err) {
+      return errorHandle(res, '修改失败, 请重试!', err)
+    }
+    if (!result) {
+      return res.status(401).send('该商品不存在!')
+    }
+    console.log(req.body)
+    let _product = _.assignIn(result, {
+      productName: req.body.productName,
+      productImg: req.productImg || req.body.productImg
+    })
+
+    _product.save((err, result) => {
+      console.log('-----update products-----')
+      console.log(result)
+      if (err) {
+        return errorHandle(res, '修改失败, 请重试!', err)
+      }
+      res.status(200).json({message: 'success'})
+    })
   })
 }

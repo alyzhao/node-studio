@@ -34,4 +34,6 @@ productsRouter.delete('/batchDelete', products.batchDelete)
 
 productsRouter.post('/detail', products.detail)
 
+productsRouter.post('/update', upload.single('uploadImg'), products.saveProductImg, products.update)
+
 module.exports = productsRouter

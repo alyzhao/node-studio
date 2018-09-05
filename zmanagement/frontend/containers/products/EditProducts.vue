@@ -5,7 +5,7 @@
         <el-input style="max-width: 500px" v-model="productInfo.productName" clearable></el-input>
       </el-form-item>
       <el-form-item label="商品图片" prop="productImg">
-        <UploadImg :imgSrc="productInfo.productImg" @file-change="fileChange" />
+        <UploadImg ref="uploadImg" :imgSrc="productInfo.productImg" @file-change="fileChange" />
       </el-form-item>
       
       <el-form-item>
@@ -44,14 +44,24 @@
             return
           }
 
+          let form = new FormData()
+          if (this.productInfo.productImg instanceof File) {
+            form.append('uploadImg', this.productInfo.productImg)
+          } else {
+            form.append('productImg', this.productInfo.productImg)
+          }
+          form.append('productName', this.productInfo.productName)
+          form.append('_id', this.id)
           if (this.idEdit) {
             // 编辑
-
+            this.axios.post('/pro/update', form).then(res => {
+              this.successHandle(res, '修改成功!', () => {
+                this.$emit('load-data')
+                this.$router.push('/products')
+              })              
+            }).catch(this.errorHandle)
           } else {
             // 添加
-            let form = new FormData()
-            form.append('uploadImg', this.productInfo.productImg)
-            form.append('productName', this.productInfo.productName)
             this.axios.post('/pro/add', form).then(res => {
               this.successHandle(res, '添加成功!', () => {
                 this.$emit('load-data')
@@ -75,6 +85,7 @@
           if (data.message === 'success') {
             this.productInfo.productName = data.productInfo.productName
             this.productInfo.productImg = data.productInfo.productImg
+            this.$refs.uploadImg.bgImg = data.productInfo.productImg
           } else {
             this.$message.error(data.message)
           }
