@@ -16,7 +16,8 @@ app.set('view engine', 'ejs')
 
 // 存储session
 
-const dbUrl = `mongodb://${config.mongoDB.user}:${config.mongoDB.password}@${config.mongoDB.host}:${config.mongoDB.port}/jewelry`
+// const dbUrl = `mongodb://${config.mongoDB.user}:${config.mongoDB.password}@${config.mongoDB.host}:${config.mongoDB.port}/jewelry`
+const dbUrl = 'mongodb://localhost/jewelry';
 // mongodb
 mongoose.connect(dbUrl, { useNewUrlParser: true }, (err, res) => {
   if (!err) {
