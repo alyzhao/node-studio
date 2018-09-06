@@ -9,12 +9,14 @@ const app = express()
 const mongoose = require('mongoose');
 const mongoStore = require('connect-mongo')(session); // 引入connect-mongo中间件存储session到mongodb, 中间件已经分离所以参数为session
 
+const config = require('./app/config')
+
 app.set('views', path.join(__dirname, './app/views'))
 app.set('view engine', 'ejs')
 
 // 存储session
 
-const dbUrl = 'mongodb://localhost/jewelry';
+const dbUrl = `mongodb://${config.mongoDB.user}:${config.mongoDB.password}@${config.mongoDB.host}:${config.mongoDB.port}/jewelry`
 // mongodb
 mongoose.connect(dbUrl, { useNewUrlParser: true }, (err, res) => {
   if (!err) {
@@ -45,7 +47,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 
 console.log(process.env.NODE_ENV)
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 
   app.use(webpackDevMiddleware(compiler, {

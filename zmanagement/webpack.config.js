@@ -14,8 +14,8 @@ module.exports = {
     // login: [path.resolve(__dirname, './frontend/main_login.js'), path.resolve(__dirname, './frontend/assets/scss/index.scss')]
   },
   output: {
-    path: path.resolve(__dirname + '/dist'),
-    publicPath: '',
+    path: path.resolve(__dirname + '/public/dist'),
+    publicPath: '/dist',
     filename: 'js/[name].min.js'
   },
   resolve: {
@@ -85,8 +85,7 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  module.exports.output.publicPath = '/'
-  module.exports.output.path = path.resolve(__dirname + '/public')
+  module.exports.output.publicPath = '/dist'
   // module.exports.devtool = 'source-map'
   module.exports.devtool = 'cheap-source-map'
   module.exports.plugins = (module.exports.plugins || []).concat([
@@ -95,7 +94,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.output.publicPath = './'
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
@@ -113,7 +111,7 @@ if (process.env.NODE_ENV === 'production') {
       canPrint: true
     }),
     new CleanWebpackPlugin(
-      ['dist/*'],
+      ['./public/dist/*'],
       {
         root: __dirname,
         verbose: true,
