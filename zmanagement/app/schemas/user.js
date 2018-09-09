@@ -15,6 +15,19 @@ let UserSchema = new mongoose.Schema({
   shopPhone: {
     type: String
   },
+  shopAddress: {
+    type: String
+  },
+  shopStore: {  // 门店
+    type: String
+  },
+  shopLicense: {  // 营业执照
+    type: String
+  },
+  shopCheckDate: {
+    type: Date,
+    default: Date.now()
+  },
   password: String,
   // 0 normal user
   // 1 verified user

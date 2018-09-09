@@ -1,7 +1,9 @@
 <template>
   <el-container class="z-management">
-    <el-aside width="250px">
-      <el-menu style="height: 100%;" :default-active="activeIndex" router>
+    <el-aside width="250px" style="position: relative;">
+      <div class="z-management-title"><i class="el-icon-goods"></i>线上展厅后台管理系统</div>
+      <el-menu style="height: 100%;padding-top: 56px;box-sizing: border-box;" :default-active="activeIndex" router background-color="#324157"
+      text-color="#bfcbd9">
         <el-menu-item v-for="item in menu" :key="item.route" :index="item.route" :route="{path: '/' + item.route}">
           <i :class="item.icon"></i>
           <span slot="title">{{item.label}}</span>
@@ -9,9 +11,9 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header style="text-align: right;border-bottom: solid 1px #e6e6e6;line-height: 60px;">
+      <el-header style="text-align: right;border-bottom: solid 1px #e6e6e6;line-height: 60px;background-color: #242f42;color: #fff;">
         <el-dropdown>
-          <i class="el-icon-setting" style="margin-right: 15px"></i>
+          <i class="el-icon-setting" style="margin-right: 15px;color: #fff;"></i>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="signout">退出</el-dropdown-item>
           </el-dropdown-menu>
@@ -107,5 +109,23 @@
 <style lang="scss">
   .z-management {
     height: 100%;
+    .z-management-title {
+      line-height: 56px;
+      text-align: left;
+      position: absolute;
+      top: 0;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      z-index: 9;
+      padding-left: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      background: #242f42;
+      padding-bottom: 3px;
+      i {
+        margin-right: 5px
+      }
+    }
   }
 </style>

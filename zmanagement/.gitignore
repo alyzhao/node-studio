@@ -62,4 +62,4 @@ typings/
 .DS_Store
 
 ../.DS_Store
-./app/config.js
+/app/config.js

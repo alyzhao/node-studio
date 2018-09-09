@@ -6,6 +6,21 @@ var ObjectId = Schema.Types.ObjectId;
 let ProductsSchema = new mongoose.Schema({
   productName: String,
   productImg: String,
+  productNumber: String,
+  productBrand: String,
+  productModel: String,   // 型号
+  productMarketDate: {
+    type: Date
+  },
+  productMaterial: String,    // 材质
+  productWeight: {
+    type: Number,
+    default: 0
+  },
+  identification: String,   // 鉴定标识
+  productDetails: String,     // 详情
+  originalPrice: Number,      // 原价
+  currentPrice: Number,     // 现价
   shopId: {
     type: ObjectId,
     ref: 'user'

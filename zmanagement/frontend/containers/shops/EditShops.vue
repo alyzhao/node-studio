@@ -5,7 +5,7 @@
         <el-input style="max-width: 500px" v-model="shopInfo.email" clearable></el-input>
       </el-form-item>
 
-      <el-form-item label="商家密码" prop="password">
+      <el-form-item label="商家密码" prop="password" v-if="!isEdit">
         <el-input style="max-width: 500px" v-model="shopInfo.password" clearable></el-input>
       </el-form-item>
 
@@ -36,6 +36,7 @@
       return {
         shopInfo: {
           email: '',
+          password: '',
           shopName: '',
           shopOwner: '',
           shopPhone: '',

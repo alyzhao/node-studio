@@ -1,11 +1,11 @@
 {
   "name": "zmanagement",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "use express and mongodb build backstage management",
   "main": "app.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon -w './app' -e js app.js",
-    "win_dev": "set NODE_ENV=development&&nodemon -w 'app/' -e js app.js",
+    "dev": "NODE_ENV=development nodemon -w 'app/' -e js app.js",
+    "win_dev": "set NODE_ENV=development&&nodemon -w '.app.js' -e js app.js",
     "build": "NODE_ENV=production webpack --progress"
   },
   "repository": {
