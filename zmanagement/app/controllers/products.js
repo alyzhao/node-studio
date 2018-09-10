@@ -14,7 +14,6 @@ exports.saveProductImg = function (req, res, next) {
 
 exports.add = function (req, res) {
   console.log(req.body)
-  console.log()
   let product = {
     productName: req.body.productName
   }

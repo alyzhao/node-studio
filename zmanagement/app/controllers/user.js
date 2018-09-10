@@ -2,10 +2,22 @@ const User = require('../models/user.js')
 const errorHandle = require('../utils').errorHandle
 const _ = require('lodash')
 
+exports.saveLicenseImg = function (req, res, next) {
+  let file = req.file;
+  console.log(file)
+  if (file) {
+    let filename = file.filename;
+    req.shopLicense = '/upload/' + filename;
+  }
+  next()
+}
+
 // 注册
 exports.signup = function (req, res) {
-  let params = req.body.shopInfo
+  let params = req.body
   console.log('params', params)
+  console.log(req.body.email)
+  console.log(params.email)
   User.findOne({email: params.email}, (err, result) => {
     if (err) {
       console.log(err)
@@ -15,13 +27,10 @@ exports.signup = function (req, res) {
     if (result) {
       res.status(200).json({message: '邮箱已存在!'})
     } else {
-      let userDoc = new User({
-        email: params.email,
-        shopName: params.shopName,
-        shopOwner: params.shopOwner,
-        shopPhone: params.shopPhone,
-        password: params.password
-      })
+      if (req.shopLicense) {
+        params.shopLicense = req.shopLicense
+      }
+      let userDoc = new User(params)
       console.log('-----signup-----')
       console.log(userDoc)
       userDoc.save((err, result) => {
@@ -159,8 +168,9 @@ exports.getShopInfo = function (req, res) {
 }
 
 exports.updateShopInfo = function (req, res) {
-  let _id = req.body.shopInfo._id
-  User.findOne({email: req.body.shopInfo.email, _id: {$ne: _id}}, (err, result) => {
+  let params = req.body
+  let _id = params._id
+  User.findOne({email: params.email, _id: {$ne: _id}}, (err, result) => {
     if (result) {
       return res.status(200).json({message: '邮箱已存在!'})
     }
@@ -171,9 +181,11 @@ exports.updateShopInfo = function (req, res) {
       if (!shopInfo) {
         return res.status(401).send('用户不存在!')
       }
-      let _shopInfo = _.assignIn(shopInfo, req.body.shopInfo)
-      console.log('-----before update-----')
+      let _shopInfo = _.assignIn(shopInfo, params)
       console.log(_shopInfo)
+      if (req.shopLicense) {
+        _shopInfo.shopLicense = req.shopLicense
+      }
       _shopInfo.save((err, result) => {
         if (err) {
           return errorHandle(res, '修改失败, 请重试!', err)

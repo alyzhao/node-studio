@@ -9,9 +9,9 @@ let UserSchema = new mongoose.Schema({
   shopName: {
     type: String
   },
-  shopOwner: {
-    type: String
-  },
+  // shopOwner: {
+  //   type: String
+  // },
   shopPhone: {
     type: String
   },

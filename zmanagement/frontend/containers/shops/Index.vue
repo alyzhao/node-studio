@@ -1,6 +1,6 @@
 <template>
   <div class="shop">
-    <router-view></router-view>
+    <router-view @load-data="loadData"></router-view>
     <div class="shop-table-wrap">
       <el-row class="operate-container">
         <el-button-group>
@@ -98,15 +98,18 @@
       handleSelectionChange (val) {
         this.multipleSelection = val
       },
+      loadData () {
+        this.axios.get('/user/list').then(res => {
+          let data = res.data
+          console.log(data)
+          this.shops = data
+        })
+      },
       checkPermission (role) {
         if (role < 50) {
           window.location.href = '/'
         } else {
-          this.axios.get('/user/list').then(res => {
-            let data = res.data
-            console.log(data)
-            this.shops = data
-          })
+          this.loadData()
         }
       }
     }

@@ -13,12 +13,28 @@
         <el-input style="max-width: 500px" v-model="shopInfo.shopName" clearable></el-input>
       </el-form-item>
 
-      <el-form-item label="商家法人" prop="shopOwner">
-        <el-input style="max-width: 500px" v-model="shopInfo.shopOwner" clearable></el-input>
+      <el-form-item label="商家电话" prop="shopPhone">
+        <el-input style="max-width: 500px" v-model="shopInfo.shopPhone" clearable></el-input>
       </el-form-item>
 
-      <el-form-item label="商家联系方式" prop="shopPhone">
-        <el-input style="max-width: 500px" v-model="shopInfo.shopPhone" clearable></el-input>
+      <el-form-item label="商家地址" prop="shopAddress">
+        <el-input style="max-width: 500px" v-model="shopInfo.shopAddress" clearable></el-input>
+      </el-form-item>
+
+      <el-form-item label="商家门店" prop="shopStore">
+        <el-input style="max-width: 500px" v-model="shopInfo.shopStore" clearable></el-input>
+      </el-form-item>
+
+      <el-form-item label="营业执照" prop="shopLicense">
+        <UploadImg ref="uploadImg" :imgSrc="shopInfo.shopLicense" @file-change="fileChange" />
+      </el-form-item>
+
+      <el-form-item label="入驻时间" prop="shopCheckDate">
+        <el-date-picker
+          v-model="shopInfo.shopCheckDate"
+          type="date"
+          placeholder="选择日期">
+        </el-date-picker>
       </el-form-item>
 
       <el-form-item>
@@ -30,6 +46,8 @@
   </div>
 </template>
 <script>
+  import UploadImg from 'components/UploadImg'
+
   export default {
     props: ['id'],
     data () {
@@ -38,16 +56,21 @@
           email: '',
           password: '',
           shopName: '',
-          shopOwner: '',
+          shopAddress: '',
           shopPhone: '',
-          _id: ''
+          shopStore: '',
+          shopLicense: '',
+          shopCheckDate: ''
         },
         shopRules: {
           email: [{ required: true , message: '商家邮箱不能为空', trigger: 'blur'}],
           password: [{ required: true , message: '商家密码不能为空', trigger: 'blur'}],
           shopName: [{ required: true, message: '商家名称不能为空', trigger: 'blur' }],
-          shopOwner: [{ required: true, message: '商家法人不能为空', trigger: 'blur' }],
-          shopPhone: [{ required: true, message: '商家联系方式不能为空', trigger: 'blur' }]
+          shopAddress: [{ required: true, message: '商家地址不能为空', trigger: 'blur' }],
+          shopPhone: [{ required: true, message: '商家电话不能为空', trigger: 'blur' }],
+          shopStore: [{ required: true, message: '商家门店不能为空', trigger: 'blur' }],
+          shopLicense: [{ required: true, message: '商家营业执照不能为空', trigger: 'blur' }],
+          shopCheckDate: [{ required: true, message: '商家入驻时间不能为空', trigger: 'blur' }]
         }
       }
     },
@@ -64,12 +87,28 @@
           }
           console.log('success')
           // 如果是添加操作
+          let form = new FormData()
+          if (this.shopInfo.shopLicense instanceof File) {
+            form.append('uploadImg', this.shopInfo.shopLicense)
+          } else {
+            form.append('shopLicense', this.shopInfo.shopLicense)
+          }
+          form.append('password', this.shopInfo.password)
+          form.append('shopName', this.shopInfo.shopName)
+          form.append('shopAddress', this.shopInfo.shopAddress)
+          form.append('shopPhone', this.shopInfo.shopPhone)
+          form.append('shopStore', this.shopInfo.shopStore)
+          form.append('shopCheckDate', this.shopInfo.shopCheckDate)
+          form.append('email', this.shopInfo.email)
+          form.append('_id', this.id)
           if (!this.isEdit) {
             console.log('addShop', this.shopInfo)
-            this.axios.post('/user/signup', {shopInfo: this.shopInfo}).then(res => {
+            this.axios.post('/user/signup', form).then(res => {
               let data = res.data
               if (data.message === 'success') {
                 this.$message.success('添加成功!')
+                this.$emit('load-data')
+                this.$router.push('/shops')
               } else {
                 this.$message.error(data.message)
               }
@@ -79,10 +118,12 @@
             })
           } else {
             // 修改操作
-            this.axios.post('/user/updateShopInfo', {shopInfo: this.shopInfo}).then(res => {
+            this.axios.post('/user/updateShopInfo', form).then(res => {
               let data = res.data
               if (data.message === 'success') {
                 this.$message.success('修改成功!')
+                this.$emit('load-data')
+                this.$router.push('/shops')
               } else {
                 this.$message.error(data.message)
               }
@@ -93,12 +134,16 @@
           }
         })
       },
+      fileChange (file) {
+        this.shopInfo.shopLicense = file
+      },
       cancel () {
         this.$router.push('/shops')
       },
       loadData () {
         this.axios.post('/user/getShopInfo', {_id: this.id}).then(res => {
           this.initShopInfo(res.data.shopInfo)
+          this.$refs.uploadImg.bgImg = res.data.shopInfo.shopLicense
         })
       },
       initShopInfo (shopInfo) {
@@ -114,6 +159,9 @@
       submitText () {
         return this.isEdit ? '提交修改' : '立即添加'
       }
+    },
+    components: {
+      UploadImg
     }
   }
 </script>
