@@ -16,10 +16,29 @@
         <el-table-column prop="shopName" label="商家名称">
         </el-table-column>
 
-        <el-table-column label="商家法人" prop="shopOwner">
+        <el-table-column label="商家邮箱" prop="email">
         </el-table-column>
 
-        <el-table-column label="联系方式" prop="shopPhone">
+        <el-table-column label="商家电话" prop="shopPhone">
+        </el-table-column>
+
+        <el-table-column label="商家地址" prop="shopAddress">
+        </el-table-column>
+
+        <el-table-column label="商家门店" prop="shopStore">
+        </el-table-column>
+
+
+        <el-table-column label="营业执照">
+          <template slot-scope="scope">
+            <img class="product-img" :src="scope.row.shopLicense" />
+          </template>
+        </el-table-column>
+
+        <el-table-column label="入驻时间">
+          <template slot-scope="scope">
+            {{new Date(scope.row.shopCheckDate).toLocaleDateString()}}
+          </template>
         </el-table-column>
 
         <el-table-column label="操作">
@@ -115,8 +134,12 @@
     }
   }
 </script>
-<style>
+<style lang="scss">
   .edit-shops + .shop-table-wrap {
     display: none;
+  }
+  .product-img {
+    max-width: 150px;
+    max-height: 150px;
   }
 </style>
