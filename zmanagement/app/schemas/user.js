@@ -50,6 +50,8 @@ let UserSchema = new mongoose.Schema({
   }
 })
 
+
+
 UserSchema.methods = {
   comparePassword: function(_password, cb) {
     bcrypt.compare(_password, this.password, function(err, isMatch) {
@@ -62,21 +64,22 @@ UserSchema.methods = {
 // 串行中间件, 在每次调用save的方法的时候都会执行
 UserSchema.pre('save', function(next) {
   let user = this;
-  console.log(user)
+  console.log(this.isNew)
   if (this.isNew) {
     this.meta.createAt = this.meta.updateAt = Date.now();
+    bcrypt.genSalt(10, function(err,salt) {
+      if (err) return next(err);
+      bcrypt.hash(user.password, salt, function(err,hash) {
+        if(err) return next(err);
+        user.password = hash;
+        next();
+      })
+    })
   } else {
     this.meta.updateAt = Date.now();
+    next()
   }
 
-  bcrypt.genSalt(10, function(err,salt) {
-    if (err) return next(err);
-    bcrypt.hash(user.password, salt, function(err,hash) {
-      if(err) return next(err);
-      user.password = hash;
-      next();
-    })
-  })
 });
 
 // 静态方法, 直接通过model调用

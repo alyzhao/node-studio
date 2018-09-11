@@ -22,19 +22,37 @@
 
       <el-row :gutter="30">
         <el-col class="title" :span="4">
-          联系人
+          联系电话
         </el-col>
         <el-col class="info" :span="20">
-          {{user.shopOwner}}
+          {{user.shopPhone}}
         </el-col>
       </el-row>
 
       <el-row :gutter="30">
         <el-col class="title" :span="4">
-          联系电话
+          地址
         </el-col>
         <el-col class="info" :span="20">
-          {{user.shopPhone}}
+          {{user.shopAddress}}
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col class="title" :span="4">
+          门店
+        </el-col>
+        <el-col class="info" :span="20">
+          {{user.shopStore}}
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col class="title" :span="4">
+          营业执照
+        </el-col>
+        <el-col class="info" :span="20">
+          <img :src="user.shopLicense">
         </el-col>
       </el-row>
 
@@ -73,7 +91,11 @@
       text-align: right;
     }
     .info {
-      color: #606266
+      color: #606266;
+      img {
+        max-width: 150px;
+        max-height: 150px;
+      }
     }
   }
 </style>

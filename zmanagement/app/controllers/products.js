@@ -14,9 +14,7 @@ exports.saveProductImg = function (req, res, next) {
 
 exports.add = function (req, res) {
   console.log(req.body)
-  let product = {
-    productName: req.body.productName
-  }
+  let product = req.body
   if (req.productImg) {
     product.productImg = req.productImg
   }
@@ -25,7 +23,7 @@ exports.add = function (req, res) {
   product.shopName = req.session.user.shopName
 
   let productDoc = new Products(product)
-
+  productDoc.isNew = true
   productDoc.save((err, result) => {
     if (err) {
       return errorHandle(res, '添加商品失败, 请重试!', err)
@@ -36,21 +34,29 @@ exports.add = function (req, res) {
 }
 
 exports.list = function (req, res) {
-  if (req.session.user.role > 50) {
-    Products.fetch((err, result) => {
-      if (err) {
-        return errorHandle(res, '获取商品列表失败, 请重试!', err)
-      }
-      res.status(200).json({message: 'success', list: result})
+  let params = {}
+  console.log(req.query.searchkey)
+  if (req.query.searchkey) {
+    search = JSON.parse(req.query.searchkey)
+    Object.keys(search).forEach(key => {
+      search[key] = new RegExp(search[key], 'i')
     })
-  } else {
-    Products.fetchByShopId(req.session.user._id, (err, result) => {
-      if (err) {
-        return errorHandle(res, '获取商品列表失败, 请重试!', err)
-      }
-      res.status(200).json({message: 'success', list: result})
-    })
+    params = search
   }
+  if (req.session.user.role < 50) {
+    params._id = req.session.user._id
+  }
+  Products.fetchPaginate(params, req.query.page, req.query.size, (err, result) => {
+    if (err) {
+      return errorHandle(res, '获取商品列表失败, 请重试!', err)
+    }
+    Products.count(params, (err, count) => {
+      if (err) {
+        return errorHandle(res, '获取商品列表失败, 请重试!', err)
+      }
+      res.status(200).json({message: 'success', list: result, count, page: req.query.page, size: req.query.size})
+    })
+  })
 }
 
 exports.delete = function (req, res) {
@@ -118,10 +124,11 @@ exports.update = function (req, res) {
       return res.status(401).send('该商品不存在!')
     }
     console.log(req.body)
-    let _product = _.assignIn(result, {
-      productName: req.body.productName,
-      productImg: req.productImg || req.body.productImg
-    })
+    let product = req.body
+    if (req.productImg) {
+      product.productImg = req.productImg
+    }
+    let _product = _.assignIn(result, product)
 
     _product.save((err, result) => {
       console.log('-----update products-----')
@@ -131,5 +138,15 @@ exports.update = function (req, res) {
       }
       res.status(200).json({message: 'success'})
     })
+  })
+}
+
+exports.getProducts = function (req, res) {
+  let _id = req.query._id
+  Products.fetchByShopId(_id, (err, result) => {
+    if (err) {
+      return errorHandle(res, '获取商品列表失败, 请重试!', err)
+    }
+    res.status(200).json({message: 'success', list: result})
   })
 }

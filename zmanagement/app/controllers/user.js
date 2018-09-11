@@ -31,6 +31,7 @@ exports.signup = function (req, res) {
         params.shopLicense = req.shopLicense
       }
       let userDoc = new User(params)
+      userDoc.isNew = true
       console.log('-----signup-----')
       console.log(userDoc)
       userDoc.save((err, result) => {
@@ -45,6 +46,7 @@ exports.signup = function (req, res) {
   })
 }
 
+// 登录
 exports.signin = function (req, res) {
   let params = req.body.user
   User.findOne({email: params.email}, (err, result) => {
@@ -62,14 +64,7 @@ exports.signin = function (req, res) {
       }
       if (isMatch) {
         console.log('password is pass!');
-        req.session.user = {
-          _id: result._id,
-          email: result.email,
-          role: result.role,
-          shopOwner: result.shopOwner,
-          shopName: result.shopName,
-          shopPhone: result.shopPhone
-        }
+        req.session.user = result
         req.session.expiretime = 1
         // res.redirect('/')
         res.status(200).json({message: 'success', user: {email: result.email, role: result.role}})
@@ -89,7 +84,8 @@ exports.getUserInfo = function (req, res) {
 
 exports.update = function (req, res) {
   let _id = req.session.user._id
-  User.findOne({email: req.body.user.email, _id: {$ne: _id}}, (err, result) => {
+  console.log('update _id: ', _id)
+  User.findOne({email: req.body.email, _id: {$ne: _id}}, (err, result) => {
     if (result) {
       return res.status(200).json({message: '邮箱已存在!'})
     }
@@ -100,23 +96,20 @@ exports.update = function (req, res) {
       if (!user) {
         return res.status(401).send('用户不存在!')
       }
-      let _user = _.assignIn(user, req.body.user)
+      let _user = _.assignIn(user, req.body)
+      if (req.shopLicense) {
+        _user.shopLicense = req.shopLicense
+      }
       console.log('-----before update-----')
       console.log(_user)
+      // 这边save的时候, 实际上把 以前的 password 再加密了一次
       _user.save((err, result) => {
         if (err) {
           return errorHandle(res, '修改失败, 请重试!', err)
         }
         console.log('-----update------')
         console.log(result)
-        req.session.user = {
-          _id: result._id,
-          email: result.email,
-          role: result.role,
-          shopOwner: result.shopOwner,
-          shopName: result.shopName,
-          shopPhone: result.shopPhone
-        }
+        req.session.user = result
         res.status(200).json({message: 'success'})
       })
     })    
@@ -145,11 +138,25 @@ exports.delete = function (req, res) {
 }
 
 exports.list = function (req, res) {
-  User.fetchUser(function(err, users) {
-    if (err) {
+  let params = {}
+  console.log(req.query.searchkey)
+  if (req.query.searchkey) {
+    search = JSON.parse(req.query.searchkey)
+    Object.keys(search).forEach(key => {
+      search[key] = new RegExp(search[key], 'i')
+    })
+    params = search
+  }
+  console.log(params)
+  params.role = {
+    $lt: 10
+  }
+  User.find(params, null, {sort: {"meta.createAt": 1}}, function (err, users) {
+    if (err) { 
       return errorHandle(res, '获取商家列表失败, 请重试!', err)
     }
     res.status(200).json(users)
+
   })
 }
 

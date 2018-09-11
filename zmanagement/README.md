@@ -37,14 +37,17 @@
 
 3. 增加系统名称显示 √
 
-4. 优化添加刷新之后重新加载数据
+4. 优化添加刷新之后重新加载数据   √
 
-5. 查看商户的首饰
+5. 查看商户的首饰.         √
 
 6. 商家信息增加字段
-    + 添加修改商家修改
+    + 添加, 修改, 商家修改个人信息（暂时不让修改密码和入驻信息） √
 
 7. 商品信息增加字段
+    + 添加, 修改 √
+
+8. 商品分页
 
 ### 参考
 
@@ -58,6 +61,9 @@
 
 #### mongodb 命令
 
+
+
+
 创建用户管理员账户 [参考](https://www.jianshu.com/p/79caa1cc49a5) [参考](https://blog.csdn.net/fofabu2/article/details/78983741)
 
 ```
@@ -66,6 +72,20 @@ db.createUser({ user: "useradmin", pwd: "adminpassword", roles: [{ role: "userAd
 db.auth("useradmin", "adminpassword")  // 返回1, 表示成功
 exit    // 退出
 ```
+
+```
+killall mongod     # mac 结束进程
+service mongod stop    # ubuntu 结束进程
+
+source ~/.bash_profile
+
+mongod --fork --logpath=/log/mongodb.log --auth 
+
+mongo -u "Allen" -p "Optimism*03" --authenticationDatabase "jewelry"
+
+```
+
+
 
 新建数据库的账号密码
 

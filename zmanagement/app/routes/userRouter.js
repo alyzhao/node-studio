@@ -27,7 +27,7 @@ userRouter.post('/signup', upload.single('uploadImg'), user.saveLicenseImg, user
 
 userRouter.post('/signin', user.signin)
 
-userRouter.post('/update', SessionManage.checkSessionForDataRequest, user.update)
+userRouter.post('/update', SessionManage.checkSessionForDataRequest, upload.single('uploadImg'), user.saveLicenseImg, user.update)
 
 userRouter.post('/signout', SessionManage.checkSessionForDataRequest, user.signout)
 

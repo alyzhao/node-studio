@@ -28,6 +28,8 @@ productsRouter.post('/add', SessionManage.checkSessionForUser, upload.single('up
 
 productsRouter.get('/list', products.list)
 
+productsRouter.get('/getProducts', SessionManage.checkSessionForAdmin, products.getProducts)
+
 productsRouter.delete('/delete', products.delete)
 
 productsRouter.delete('/batchDelete', products.batchDelete)

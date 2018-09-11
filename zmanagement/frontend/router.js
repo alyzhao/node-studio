@@ -6,6 +6,7 @@ import Shops from 'containers/shops/Index'
 import EditShops from 'containers/shops/EditShops'
 import Merchant from 'containers/merchant/Index' 
 import EditUserInfo from 'containers/merchant/EditUserInfo'
+import ShopProducts from 'containers/shops/ShopProducts'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ const routes = [{
     name: 'addShop',
     path: 'add',
     component: EditShops
+  }, {
+    name: 'shopProducts',
+    path: 'goods/:sid',
+    component: ShopProducts,
+    props: true
   }]
 }]
 

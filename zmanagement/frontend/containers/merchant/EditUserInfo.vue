@@ -1,24 +1,29 @@
 <template>
   <div class="edit-userinfo">
     <el-form ref="userTable" :model="user" label-width="120px" :rules="userRules" status-icon style="padding: 30px 30px 10px 0;">
-      <el-form-item label="邮箱" prop="email">
+
+      <el-form-item label="商家邮箱" prop="email">
         <el-input style="max-width: 500px" v-model="user.email" clearable></el-input>
       </el-form-item>
 
-<!--       <el-form-item label="商家密码" prop="password">
-        <el-input style="max-width: 500px" v-model="user.password" clearable></el-input>
-      </el-form-item>
- -->
-      <el-form-item label="用户名称" prop="shopName">
+      <el-form-item label="商家名称" prop="shopName">
         <el-input style="max-width: 500px" v-model="user.shopName" clearable></el-input>
       </el-form-item>
 
-      <el-form-item label="联系人" prop="shopOwner">
-        <el-input style="max-width: 500px" v-model="user.shopOwner" clearable></el-input>
+      <el-form-item label="商家电话" prop="shopPhone">
+        <el-input style="max-width: 500px" v-model="user.shopPhone" clearable></el-input>
       </el-form-item>
 
-      <el-form-item label="联系电话" prop="shopPhone">
-        <el-input style="max-width: 500px" v-model="user.shopPhone" clearable></el-input>
+      <el-form-item label="商家地址" prop="shopAddress">
+        <el-input style="max-width: 500px" v-model="user.shopAddress" clearable></el-input>
+      </el-form-item>
+
+      <el-form-item label="商家门店" prop="shopStore">
+        <el-input style="max-width: 500px" v-model="user.shopStore" clearable></el-input>
+      </el-form-item>
+
+      <el-form-item label="营业执照" prop="shopLicense">
+        <UploadImg ref="uploadImg" :imgSrc="user.shopLicense" @file-change="fileChange" />
       </el-form-item>
 
       <el-form-item>
@@ -30,33 +35,37 @@
   </div>
 </template>
 <script>
+  import UploadImg from 'components/UploadImg'
+
   export default {
-    props: ['id'],
     data () {
       return {
         user: {
           email: '',
           shopName: '',
-          shopOwner: '',
+          shopAddress: '',
           shopPhone: '',
-          // password: '123456'
+          shopStore: '',
+          shopLicense: ''
         },
         userRules: {
           email: [{ required: true , message: '商家邮箱不能为空', trigger: 'blur'}],
-          // password: [{ required: true , message: '商家密码不能为空', trigger: 'blur'}],
           shopName: [{ required: true, message: '商家名称不能为空', trigger: 'blur' }],
-          shopOwner: [{ required: true, message: '商家法人不能为空', trigger: 'blur' }],
-          shopPhone: [{ required: true, message: '商家联系方式不能为空', trigger: 'blur' }]
+          shopAddress: [{ required: true, message: '商家地址不能为空', trigger: 'blur' }],
+          shopPhone: [{ required: true, message: '商家电话不能为空', trigger: 'blur' }],
+          shopStore: [{ required: true, message: '商家门店不能为空', trigger: 'blur' }],
+          shopLicense: [{ required: true, message: '商家营业执照不能为空', trigger: 'blur' }],
         }
       }
     },
-    created () {
-      console.log(this.userStore)
+    mounted () {
       if (this.userStore.email) {
         this.initUserInfo(this.userStore)
+        this.$refs.uploadImg.bgImg = this.userStore.shopLicense
       } else {
         this.$store.dispatch('getUserInfo', this).then(user => {
           this.initUserInfo(user)
+          this.$refs.uploadImg.bgImg = user.shopLicense
         })
       }
     },
@@ -66,8 +75,20 @@
           if (!valid) {
             return
           }
+
+          let form = new FormData()
+          if (this.user.shopLicense instanceof File) {
+            form.append('uploadImg', this.user.shopLicense)
+          } else {
+            form.append('shopLicense', this.user.shopLicense)
+          }
+          form.append('shopName', this.user.shopName)
+          form.append('shopAddress', this.user.shopAddress)
+          form.append('shopPhone', this.user.shopPhone)
+          form.append('shopStore', this.user.shopStore)
+          form.append('email', this.user.email)
           // 调取接口用户修改信息
-          this.axios.post('/user/update', {user: this.user}).then(res => {
+          this.axios.post('/user/update', form).then(res => {
             let data = res.data
             if (data.message === 'success') {
               this.$message.success('修改成功!')
@@ -89,12 +110,18 @@
       },
       cancel () {
         this.$router.push('/index')
+      },
+      fileChange (file) {
+        this.user.shopLicense = file
       }
     },
     computed: {
       userStore () {
         return this.$store.state.Account.user
       }
+    },
+    components: {
+      UploadImg
     }
   }
 </script>

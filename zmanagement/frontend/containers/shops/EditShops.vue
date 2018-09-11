@@ -85,7 +85,6 @@
           if (!valid) {
             return
           }
-          console.log('success')
           // 如果是添加操作
           let form = new FormData()
           if (this.shopInfo.shopLicense instanceof File) {
@@ -100,7 +99,10 @@
           form.append('shopStore', this.shopInfo.shopStore)
           form.append('shopCheckDate', this.shopInfo.shopCheckDate)
           form.append('email', this.shopInfo.email)
-          form.append('_id', this.id)
+          // 添加 _id 不要传, 否则报 Cast to ObjectID failed for value "undefined" at path "_id" 错误
+          if (this.isEdit) {
+            form.append('_id', this.id)            
+          }
           if (!this.isEdit) {
             console.log('addShop', this.shopInfo)
             this.axios.post('/user/signup', form).then(res => {
@@ -117,6 +119,7 @@
               this.$message.error(err.response.data.message)
             })
           } else {
+            console.log('modify')
             // 修改操作
             this.axios.post('/user/updateShopInfo', form).then(res => {
               let data = res.data

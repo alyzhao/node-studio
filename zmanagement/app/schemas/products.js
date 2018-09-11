@@ -70,6 +70,13 @@ ProductsSchema.statics = {
     return this
       .findOne({_id: id})
       .exec(cb)
+  },
+  fetchPaginate: function (select, page, size, cb) {
+    return this
+      .find(select)
+      .skip((page - 1) * size)
+      .sort('meta.createAt')
+      .exec(cb)
   }
 }
 

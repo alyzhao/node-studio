@@ -3,10 +3,19 @@
     <router-view @load-data="loadData"></router-view>
     <div class="shop-table-wrap">
       <el-row class="operate-container">
-        <el-button-group>
-          <el-button type="warning" icon="el-icon-circle-plus-outline" @click="addShop">添加</el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="deleteBatchShop" :disabled="multipleSelection.length <= 0">删除</el-button>          
-        </el-button-group>
+        <el-col :span="18">
+          <el-select v-model="keyword" placeholder="请选择搜索条件">
+            <el-option v-for="item in selectOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+          <el-input v-model="keywordValue" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
+          <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+        </el-col>
+        <el-col :span="6" style="text-align: right">
+          <el-button-group>
+            <el-button type="warning" icon="el-icon-circle-plus-outline" @click="addShop">添加</el-button>
+            <el-button type="danger" icon="el-icon-delete" @click="deleteBatchShop" :disabled="multipleSelection.length <= 0">删除</el-button>          
+          </el-button-group>          
+        </el-col>
       </el-row>
 
       <el-table :data="shops" style="width: 100%" class="shop-table center-tb" @selection-change="handleSelectionChange">
@@ -41,10 +50,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="260px">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="editShop(scope.row._id)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="deleteShop(scope.row._id)">删除</el-button>
+            <el-button type="warning" size="mini" style="margin-left: 3px;" @click="showProducts(scope.row._id)">查看商品</el-button>
+            <el-button size="mini" type="danger" style="margin-left: 3px;" @click="deleteShop(scope.row._id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -56,7 +66,19 @@
     data () {
       return {
         shops: [],
-        multipleSelection: []
+        multipleSelection: [],
+        keyword: null,
+        keywordValue: null,
+        selectOptions: [{
+          value: 'email',
+          label: '邮箱'
+        }, {
+          value: 'shopName',
+          label: '商家名称'
+        }, {
+          value: 'shopPhone',
+          label: '商家电话'
+        }]
       }
     },
     created () {
@@ -86,6 +108,7 @@
           this.axios.delete('/user/delete', {data: {_id: _id}}).then(res => {
             if (res.data.message === 'success') {
               this.$message.success('删除成功!')
+              this.loadData()
             } else {
               this.$message.error(res.data.message)
             }
@@ -106,6 +129,7 @@
           }).then(res => {
             if (res.data.message === 'success') {
               this.$message.success('删除成功!')
+              this.loadData()
             } else {
               this.$message.error(res.data.message)
             }
@@ -117,8 +141,9 @@
       handleSelectionChange (val) {
         this.multipleSelection = val
       },
-      loadData () {
-        this.axios.get('/user/list').then(res => {
+      loadData (params = {}) {
+        console.log(params)
+        this.axios.get('/user/list', {params: params}).then(res => {
           let data = res.data
           console.log(data)
           this.shops = data
@@ -130,12 +155,24 @@
         } else {
           this.loadData()
         }
+      },
+      showProducts (_id) {
+        console.log(_id)
+        this.$router.push(`/shops/goods/${_id}`)
+      },
+      search () {
+        let searchkey = ''
+        if (this.keywordValue && this.keyword) {
+          searchkey = {}
+          searchkey[this.keyword] = this.keywordValue
+        }
+        this.loadData({searchkey: searchkey})
       }
     }
   }
 </script>
 <style lang="scss">
-  .edit-shops + .shop-table-wrap {
+  .edit-shops + .shop-table-wrap, .shop-products + .shop-table-wrap {
     display: none;
   }
   .product-img {
