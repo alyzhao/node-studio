@@ -1,6 +1,7 @@
 const userRouter = require('./userRouter')
 const productsRouter = require('./productsRouter')
 const SessionManage = require('./SessionManage')
+const clientRouter = require('./clientRouter')
 
 module.exports = function (app) {
   app.get('/login', (req, res) => {
@@ -8,6 +9,8 @@ module.exports = function (app) {
   })
 
   app.use('/pro', SessionManage.checkSessionForDataRequest, productsRouter)
+
+  app.use('/client', clientRouter)
 
   app.use('/user', userRouter)
 

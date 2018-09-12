@@ -22,6 +22,9 @@
         <el-table-column type="selection" width="55">
         </el-table-column>
 
+        <el-table-column prop="_id" label="商家id">
+        </el-table-column>
+
         <el-table-column prop="shopName" label="商家名称">
         </el-table-column>
 

@@ -44,7 +44,7 @@ exports.list = function (req, res) {
     params = search
   }
   if (req.session.user.role < 50) {
-    params._id = req.session.user._id
+    params.shopId = req.session.user._id
   }
   Products.fetchPaginate(params, req.query.page, req.query.size, (err, result) => {
     if (err) {
@@ -150,3 +150,18 @@ exports.getProducts = function (req, res) {
     res.status(200).json({message: 'success', list: result})
   })
 }
+
+exports.getShopProducts = function (req, res) {
+  let params = {}
+  if (req.query._id) {
+    params.shopId = req.query._id
+  }
+  console.log(params)
+  Products.find(params, (err, result) => {
+    if (err) {
+      return errorHandle(res, '获取商品列表失败, 请重试!', err)
+    }
+    res.status(200).json({message: 'success', list: result})
+  })
+}
+

@@ -201,6 +201,7 @@
     .product-img {
       max-width: 150px;
       max-height: 150px;
+      width: 100%;
     }
   }
   .center-tb {
