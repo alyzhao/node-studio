@@ -198,12 +198,13 @@
     .edit-products + .product-table-wrap {
       display: none;
     }
+  }
     .product-img {
       max-width: 150px;
       max-height: 150px;
       width: 100%;
     }
-  }
+  
   .center-tb {
     table {
       tr {
