@@ -158,6 +158,7 @@ exports.getShopProducts = function (req, res) {
   }
   console.log(params)
   Products.find(params, (err, result) => {
+    res.header('Access-Control-Allow-Origin', '*')
     if (err) {
       return errorHandle(res, '获取商品列表失败, 请重试!', err)
     }
