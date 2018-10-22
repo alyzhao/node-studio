@@ -70,7 +70,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 // app.use(session)
 
-app.use(serveStatic(path.join(__dirname, 'public')))     // 加载静态目录时在这儿查找
+app.use(serveStatic(path.join(__dirname, './public')))     // 加载静态目录时在这儿查找
 
 require('./app/routes')(app)
 
