@@ -15,9 +15,6 @@ app.set('views', path.join(__dirname, './app/views'))
 app.set('view engine', 'ejs')
 
 // 存储session
-if (process.env.NODE_ENV === 'production') {
-
-}
 const dbUrl = process.env.NODE_ENV === 'production' ?
   `mongodb://${config.mongoDB.user}:${config.mongoDB.password}@${config.mongoDB.host}:${config.mongoDB.port}/resume` :
   'mongodb://localhost/resume';
@@ -32,7 +29,7 @@ mongoose.connect(dbUrl, { useNewUrlParser: true }, (err, res) => {
 mongoose.Promise = global.Promise;  
 app.use(cookieParser());
 app.use(session({
-  secret: 'zmanagement',
+  secret: 'resume',
   store: new mongoStore({
     url: dbUrl,
     collection: 'sessions'  // 存储到mongodb的collection名

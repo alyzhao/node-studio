@@ -2,7 +2,6 @@
   <el-container class="z-management">
     <el-aside width="250px" style="position: relative;">
       <div class="z-management-title">
-        <i class="el-icon-goods"></i>
         简历管理
       </div>
       <el-menu style="height: 100%;padding-top: 56px;box-sizing: border-box;" :default-active="activeIndex" router background-color="#324157"
@@ -49,9 +48,9 @@
     },
     created () {
       this.axios.interceptors.response.use(response => {
-        console.log(response)
         return response
       }, err => {
+        console.log(err)
         if (err.response.status === 401) {
           this.$alert('长时间未操作, 请登录!', '提示', {
             confirmButtonText: '确定',
@@ -66,8 +65,15 @@
             type: 'warning',
             callback: action => {
               window.location.href = '/'
-            }          
+            }
           })
+        } else if (err.response.status === 500) {
+          console.log(err)
+          this.$notify.error({
+            title: '获取数据出错',
+            message: err.response.data.message || err.message,
+            duration: 0
+          });
         }
         return Promise.reject(err) 
       })

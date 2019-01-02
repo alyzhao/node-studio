@@ -1,10 +1,10 @@
 export const userMenu = [{
   label: '上传简历',
-  icon: 'el-icon-star-on',
+  icon: 'el-icon-upload',
   route: 'index'
 }, {
   label: '简历管理',
-  icon: 'el-icon-goods',
+  icon: 'el-icon-menu',
   route: 'resume'
 }]
 

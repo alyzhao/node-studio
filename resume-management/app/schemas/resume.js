@@ -3,11 +3,15 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 let ResumeSchema = new mongoose.Schema({
-  fileName: String,
+  filename: {
+    unique: true,
+    type: String
+  },
   filePath: String,
   name: String,
   phone: String,
   job: String,
+  viewDate: Date,
   viewerId: {
     type: ObjectId,
     ref: 'viewer'
@@ -22,6 +26,10 @@ let ResumeSchema = new mongoose.Schema({
       default: Date.now()
     }
   }
+})
+
+ResumeSchema.virtual('viewDateFormat').get(function() {
+  return new Date(this.viewDate).toLocaleDateString()
 })
 
 // 静态方法, 直接通过model调用
@@ -43,11 +51,17 @@ ResumeSchema.statics = {
       .findOne({_id: id})
       .exec(cb)
   },
-  fetchPaginate: function (select, page, size, cb) {
+  fetchByFilename: function(filename, cb) {
     return this
-      .find(select)
+      .findOne({ filename: filename })
+      .exec(cb)
+  },
+  fetchPaginate: function (page, size, cb) {
+    return this
+      .find()
+      .limit(parseInt(size))
       .skip((page - 1) * size)
-      .sort('meta.createAt')
+      .sort({viewDate: -1})
       .exec(cb)
   }
 }
