@@ -16,6 +16,11 @@ ViewerSchema.statics = {
       .find({})
       .sort('rank')
       .exec(cb)
+  },
+  fetchNext: function (rank, cb) {
+    return this
+      .findOne({rank: rank + 1})
+      .exec(cb)
   }
 }
 

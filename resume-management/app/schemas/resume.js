@@ -16,6 +16,7 @@ let ResumeSchema = new mongoose.Schema({
     type: ObjectId,
     ref: 'viewer'
   },
+  description: String,
   meta: {
     createAt: {
       type: Date,
@@ -62,6 +63,7 @@ ResumeSchema.statics = {
       .limit(parseInt(size))
       .skip((page - 1) * size)
       .sort({viewDate: -1})
+      .populate('viewerId')
       .exec(cb)
   }
 }

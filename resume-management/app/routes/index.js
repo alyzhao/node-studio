@@ -14,12 +14,6 @@ module.exports = function (app) {
 
   app.use('/resume', SessionManage.checkSessionForDataRequest, resumeRouter)
 
-  // app.use('/pro', SessionManage.checkSessionForDataRequest, productsRouter)
-
-  // app.use('/client', clientRouter)
-
-  // app.use('/user', userRouter)
-
   app.get('*', SessionManage.checkSessionForPageRequest, (req, res) => {
     res.render('index')
   })

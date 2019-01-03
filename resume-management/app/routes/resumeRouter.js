@@ -10,4 +10,6 @@ resumeRouter.delete('/delete', resume.delete)
 
 resumeRouter.post('/setViewer', resume.setViewer)
 
+resumeRouter.post('/describe', resume.describe)
+
 module.exports = resumeRouter

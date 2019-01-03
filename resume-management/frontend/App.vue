@@ -1,6 +1,6 @@
 <template>
   <el-container class="z-management">
-    <el-aside width="250px" style="position: relative;">
+    <el-aside width="200px" style="position: relative;">
       <div class="z-management-title">
         简历管理
       </div>

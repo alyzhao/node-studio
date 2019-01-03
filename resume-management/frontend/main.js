@@ -12,7 +12,7 @@ import mixin from './mixin'
   
 Vue.mixin(mixin)
 
-Vue.use(ElementUI, { size: 'small' })
+Vue.use(ElementUI, { size: 'mini' })
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 Vue.prototype.axios = axios

@@ -2,16 +2,6 @@ const User = require('../models/user.js')
 const errorHandle = require('../utils').errorHandle
 const _ = require('lodash')
 
-exports.saveLicenseImg = function (req, res, next) {
-  let file = req.file;
-  console.log(file)
-  if (file) {
-    let filename = file.filename;
-    req.shopLicense = '/upload/' + filename;
-  }
-  next()
-}
-
 // 注册
 exports.signup = function (req, res) {
   let params = req.body

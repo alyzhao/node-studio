@@ -13,13 +13,21 @@ exports.list = (req, res) => {
     if (err) {
       return errorHandle(res, '获取面试列表失败, 请重试!', err)
     }
-    Resume.count({}, (err, count) => {
+    console.log(result)
+    Resume.countDocuments({}, (err, count) => {
       if (err) {
         return errorHandle(res, '获取面试列表失败, 请重试!', err)
       }
       let _result = result.map(item => {
-        let { filename, filePath, name, phone, job, viewDate, viewerId, _id } = item
-        let _item = { filename, filePath, name, phone, job, viewerId, _id }
+
+        let { filename, filePath, name, phone, job, viewDate, viewerId, _id, description } = item
+        console.log(_id)
+        let _item = { filename, filePath, name, phone, job, _id, description }
+        if (viewerId) {
+          _item.viewerId = viewerId._id
+          _item.rank = viewerId.rank
+        }
+        
         _item.viewDate = new Date(viewDate).toLocaleDateString()
         return _item
       })
@@ -92,10 +100,10 @@ exports.delete = (req, res) => {
 
 exports.setViewer = (req, res) => {
   let resumeId = req.body.resumeId
-  let viewerId = req.body.viewerId
-  console.log(viewerId)
+  let rank = req.body.rank
+  console.log(rank)
   let errMessage = '转交失败'
-  Viewer.findOne({_id: viewerId}, (err, viewerInfo) => {
+  Viewer.fetchNext(rank, (err, viewerInfo) => {
     if (err || !viewerInfo) {
       return errorHandle(res, errMessage, err)
     }
@@ -107,7 +115,7 @@ exports.setViewer = (req, res) => {
 
     Resume.findById(resumeId, (err, resumeInfo) => {
       if (err) {
-        return errorHandle(res, '没有改简历信息', err)
+        return errorHandle(res, '没有该简历信息', err)
       }
 
       let { name, phone, job, filePath, filename } = resumeInfo
@@ -132,7 +140,7 @@ exports.setViewer = (req, res) => {
         if (err) {
           return errorHandle(res, '发送邮件失败', err)
         } else {
-          resumeInfo.viewerId = viewerId
+          resumeInfo.viewerId = viewerInfo._id
           resumeInfo.save((err, result) => {
             if (err) {
               return errorHandle(res, '邮件已发送, 转交失败', err)
@@ -144,6 +152,18 @@ exports.setViewer = (req, res) => {
       
     })
 
+  })
+}
+
+exports.describe = (req, res) => {
+  let { resumeId, description } = req.body
+  Resume.updateOne({ _id: resumeId }, {$set : { description }}, (err, result) => {
+    if (err) {
+      console.log(err)
+      return errorHandle(res, '评价失败!', err)
+    }
+    console.log(result)
+    res.status(200).json({ message: '评价成功!' })
   })
 }
 
