@@ -39,6 +39,7 @@ exports.list = function (req, res) {
   if (req.query.searchkey) {
     search = JSON.parse(req.query.searchkey)
     Object.keys(search).forEach(key => {
+      // 可以使用正则来做模糊匹配
       search[key] = new RegExp(search[key], 'i')
     })
     params = search
