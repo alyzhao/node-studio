@@ -1,0 +1,74 @@
+{
+  "name": "zmanagement",
+  "version": "2.0.0",
+  "description": "use express and mongodb build backstage management",
+  "main": "app.js",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon -w 'app/' -e js app.js",
+    "win_dev": "set NODE_ENV=development&&nodemon -w '.app.js' -e js app.js",
+    "build": "NODE_ENV=production webpack --progress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alyzhao/node-studio.git"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "mongoose"
+  ],
+  "author": "Allen Zhao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alyzhao/node-studio/issues"
+  },
+  "homepage": "https://github.com/alyzhao/node-studio#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "connect-mongo": "^2.0.1",
+    "cookie-parser": "^1.4.3",
+    "element-ui": "^2.4.6",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.2.12",
+    "multer": "^1.3.1",
+    "nodemailer": "^5.0.0",
+    "normalize.css": "^8.0.0",
+    "qs": "^6.5.2",
+    "serve-static": "^1.13.2",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "babel-loader": "^8.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/runtime": "^7.1.2",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^2.0.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "morgan": "^1.9.0",
+    "node-sass": "^4.9.3",
+    "nodemon": "^1.18.3",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.0",
+    "uglifyjs-webpack-plugin": "^1.3.0",
+    "url-loader": "^1.1.1",
+    "vue-loader": "^15.4.1",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.17.1",
+    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-middleware": "^3.2.0",
+    "webpack-hot-middleware": "^2.22.3"
+  }
+}
