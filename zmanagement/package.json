@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/alyzhao/node-studio#readme",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "connect-mongo": "^2.0.1",
